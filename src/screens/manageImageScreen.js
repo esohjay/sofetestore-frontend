@@ -48,7 +48,7 @@ export default function ManageImageScreen(props) {
       setLoadingUpload(true);
       try {
         const { data } = await Axios.post(
-          "/api/products/uploads",
+          `${process.env.REACT_APP_URL}/api/products/uploads`,
           bodyFormData,
           {
             headers: {

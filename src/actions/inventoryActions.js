@@ -26,9 +26,13 @@ export const createInventory = (info) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.post(`/api/inventory`, info, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/inventory`,
+      info,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: INVENTORY_CREATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -45,9 +49,13 @@ export const updateInventory = (info) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.put(`/api/inventory/${info.id}`, info, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/inventory/${info.id}`,
+      info,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: INVENTORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -65,7 +73,7 @@ export const inventorySales = (info) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.put(
-      `/api/inventory/addsales/${info.id}`,
+      `${process.env.REACT_APP_URL}/api/inventory/addsales/${info.id}`,
       info,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -87,9 +95,12 @@ export const detailsInventory = (id) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/inventory/${id}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/inventory/${id}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: INVENTORY_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -107,9 +118,12 @@ export const allInventory = () => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/inventory`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/inventory`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: INVENTORY_LIST_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -127,9 +141,12 @@ export const deleteInventory = (productId) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.delete(`/api/inventory/${productId}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.delete(
+      `${process.env.REACT_APP_URL}/api/inventory/${productId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: INVENTORY_DELETE_SUCCESS, payload: data });
   } catch (error) {
     const message =

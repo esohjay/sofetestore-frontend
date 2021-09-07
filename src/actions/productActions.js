@@ -48,7 +48,7 @@ export const listProducts =
     });
     try {
       const { data } = await Axios.get(
-        `https://sofetestore.herokuapp.com/api/products?name=${name}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
+        `${process.env.REACT_APP_URL}/api/products?name=${name}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
       );
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
@@ -60,7 +60,7 @@ export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
     const { data } = await Axios.get(
-      `https://sofetestore.herokuapp.com/api/products/${productId}`
+      `${process.env.REACT_APP_URL}/api/products/${productId}`
     );
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
@@ -84,7 +84,7 @@ export const createProduct = (product) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.post(
-      "https://sofetestore.herokuapp.com/api/products",
+      `${process.env.REACT_APP_URL}/api/products`,
       product,
       {
         headers: {
@@ -112,7 +112,7 @@ export const updateProduct = (product) => async (dispatch) => {
 
   try {
     const { data } = await Axios.put(
-      `https://sofetestore.herokuapp.com/api/products/${product._id}`,
+      `${process.env.REACT_APP_URL}/api/products/${product._id}`,
       product
     );
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
@@ -134,7 +134,7 @@ export const manageImages = (product) => async (dispatch) => {
 
   try {
     const { data } = await Axios.put(
-      `https://sofetestore.herokuapp.com/api/products/${product._id}/manageimages`,
+      `${process.env.REACT_APP_URL}/api/products/${product._id}/manageimages`,
       product
     );
     dispatch({ type: PRODUCT_IMAGES_SUCCESS, payload: data });
@@ -155,7 +155,7 @@ export const deleteProduct = (productId) => async (dispatch) => {
   });
   try {
     const { data } = await Axios.delete(
-      `https://sofetestore.herokuapp.com/api/products/${productId}`
+      `${process.env.REACT_APP_URL}/api/products/${productId}`
     );
     dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data });
   } catch (error) {
@@ -176,7 +176,7 @@ export const createReview =
     } = getState();
     try {
       const { data } = await Axios.post(
-        `https://sofetestore.herokuapp.com/api/products/${productId}/reviews`,
+        `${process.env.REACT_APP_URL}/api/products/${productId}/reviews`,
         review,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -201,7 +201,7 @@ export const createVariation = (variation) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.post(
-      `https://sofetestore.herokuapp.com/api/products/${variation._id}/variation`,
+      `${process.env.REACT_APP_URL}/api/products/${variation._id}/variation`,
       variation,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -224,7 +224,7 @@ export const dealProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DEAL_REQUEST, payload: productId });
   try {
     const { data } = await Axios.put(
-      `https://sofetestore.herokuapp.com/api/products/${productId}/hotdeal`
+      `${process.env.REACT_APP_URL}/api/products/${productId}/hotdeal`
     );
     dispatch({ type: PRODUCT_DEAL_SUCCESS, payload: data });
   } catch (error) {
@@ -244,7 +244,7 @@ export const updateVariation = (info) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.put(
-      `https://sofetestore.herokuapp.com/api/products/variationupdate/${info.id}`,
+      `${process.env.REACT_APP_URL}/api/products/variationupdate/${info.id}`,
       info,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },

@@ -26,9 +26,13 @@ export const createSales = (info) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.post(`/api/sales`, info, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/sales`,
+      info,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: SALES_CREATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -45,9 +49,13 @@ export const updateSales = (info) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.put(`/api/sales/${info.id}`, info, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/sales/${info.id}`,
+      info,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: SALES_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -64,9 +72,12 @@ export const detailsSales = (id) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/sales/${id}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/sales/${id}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: SALES_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -84,7 +95,7 @@ export const allSales = () => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/sales`, {
+    const { data } = await Axios.get(`${process.env.REACT_APP_URL}/api/sales`, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
     dispatch({ type: SALES_LIST_SUCCESS, payload: data });
@@ -104,9 +115,12 @@ export const deleteSales = (productId) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.delete(`/api/sales/${productId}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.delete(
+      `${process.env.REACT_APP_URL}/api/sales/${productId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: SALES_DELETE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -122,9 +136,12 @@ export const batchSales = (batch) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/sales/batch/${batch}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/sales/batch/${batch}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: SALES_BATCH_SUCCESS, payload: data });
   } catch (error) {
     const message =

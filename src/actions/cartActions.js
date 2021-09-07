@@ -22,7 +22,9 @@ import {
 } from "../constants/cartConstants";
 
 export const addToCart = (productId, qty) => async (dispatch, getState) => {
-  const { data } = await Axios.get(`/api/products/${productId}`);
+  const { data } = await Axios.get(
+    `${process.env.REACT_APP_URL}/api/products/${productId}`
+  );
   dispatch({
     type: CART_ADD_ITEM,
     payload: {
@@ -43,9 +45,13 @@ export const createCart = (productId, size) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.post(`/api/cart/${productId}`, size, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/cart/${productId}`,
+      size,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: CART_CREATE_SUCCESS, payload: data.cart });
   } catch (error) {
     const message =
@@ -62,9 +68,13 @@ export const updateCart = (productId, info) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.put(`/api/cart/update/${productId}`, info, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/cart/update/${productId}`,
+      info,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: CART_UPDATE_SUCCESS, payload: data.cart });
   } catch (error) {
     const message =
@@ -80,9 +90,12 @@ export const removeCartItem = (productId) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.put(`/api/cart/remove/${productId}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/cart/remove/${productId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: CART_REMOVE_SUCCESS, payload: data.cart });
   } catch (error) {
     const message =
@@ -97,7 +110,9 @@ export const detailsCart = () => async (dispatch) => {
   dispatch({ type: CART_DETAILS_REQUEST });
 
   try {
-    const { data } = await Axios.get(`/api/cart/cartitems`);
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/cart/cartitems`
+    );
     dispatch({ type: CART_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -114,7 +129,7 @@ export const deleteCart = () => async (dispatch) => {
     type: CART_DELETE_REQUEST,
   });
   try {
-    const { data } = await Axios.put(`/api/cart`);
+    const { data } = await Axios.put(`${process.env.REACT_APP_URL}/api/cart`);
     dispatch({ type: CART_DELETE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({

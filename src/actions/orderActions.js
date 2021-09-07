@@ -10,16 +10,16 @@ import {
   ORDER_PAY_REQUEST,
   ORDER_PAY_FAIL,
   ORDER_PAY_SUCCESS,
-   ORDER_MINE_LIST_REQUEST,
+  ORDER_MINE_LIST_REQUEST,
   ORDER_MINE_LIST_FAIL,
   ORDER_MINE_LIST_SUCCESS,
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_FAIL,
-   ORDER_DELETE_REQUEST,
+  ORDER_DELETE_REQUEST,
   ORDER_DELETE_SUCCESS,
   ORDER_DELETE_FAIL,
-   ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
 } from "../constants/orderConstants";
@@ -30,14 +30,16 @@ export const createOrder = (order) => async (dispatch, getState) => {
     const {
       userSignin: { userInfo },
     } = getState();
-    const { data } = await Axios.post("/api/orders", order, {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/orders`,
+      order,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
     dispatch({ type: ORDER_CREATE_SUCCESS, payload: data.order });
-    
-    
   } catch (error) {
     dispatch({
       type: ORDER_CREATE_FAIL,
@@ -54,9 +56,12 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get(`/api/orders/${orderId}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/orders/${orderId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -75,7 +80,7 @@ export const payOrder =
     } = getState();
     try {
       const { data } = await Axios.put(
-        `/api/orders/${order._id}/pay`,
+        `${process.env.REACT_APP_URL}/api/orders/${order._id}/pay`,
         paymentResult,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -91,17 +96,20 @@ export const payOrder =
     }
   };
 
-  export const listOrderMine = () => async (dispatch, getState) => {
+export const listOrderMine = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_MINE_LIST_REQUEST });
   const {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get('/api/orders', {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/orders`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
     dispatch({ type: ORDER_MINE_LIST_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -117,9 +125,12 @@ export const listOrders = () => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.get('/api/orders/order/all', {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/orders/order/all`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     console.log(data);
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
@@ -136,9 +147,12 @@ export const deleteOrder = (orderId) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = Axios.delete(`/api/orders/${orderId}`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
+    const { data } = Axios.delete(
+      `${process.env.REACT_APP_URL}/api/orders/${orderId}`,
+      {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      }
+    );
     dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -155,7 +169,7 @@ export const deliverOrder = (orderId) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = Axios.put(
-      `/api/orders/${orderId}/deliver`,
+      `${process.env.REACT_APP_URL}/api/orders/${orderId}/deliver`,
       {},
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },

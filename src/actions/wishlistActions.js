@@ -21,7 +21,10 @@ export const createWishlist = (productId, size) => async (dispatch) => {
   dispatch({ type: WISHLIST_CREATE_REQUEST, payload: productId });
 
   try {
-    const { data } = await Axios.post(`/api/wishlist/${productId}`, size);
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/wishlist/${productId}`,
+      size
+    );
     dispatch({ type: WISHLIST_CREATE_SUCCESS, payload: data.wishlist });
   } catch (error) {
     const message =
@@ -36,7 +39,10 @@ export const updateWishlist = (productId, info) => async (dispatch) => {
   dispatch({ type: WISHLIST_UPDATE_REQUEST, payload: productId });
 
   try {
-    const { data } = await Axios.put(`/api/wishlist/update/${productId}`, info);
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/wishlist/update/${productId}`,
+      info
+    );
     dispatch({ type: WISHLIST_UPDATE_SUCCESS, payload: data.wishlist });
   } catch (error) {
     const message =
@@ -51,7 +57,9 @@ export const detailsWishlist = () => async (dispatch) => {
   dispatch({ type: WISHLIST_DETAILS_REQUEST });
 
   try {
-    const { data } = await Axios.get(`/api/wishlist/wishlistitems`);
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/wishlist/wishlistitems`
+    );
     dispatch({ type: WISHLIST_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -67,7 +75,9 @@ export const findWishlistDetails = (wishlist) => async (dispatch) => {
   dispatch({ type: FIND_WISHLIST_DETAILS_REQUEST, payload: wishlist });
 
   try {
-    const { data } = await Axios.get(`/api/wishlist/findwishlist/${wishlist}`);
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/wishlist/findwishlist/${wishlist}`
+    );
     dispatch({ type: FIND_WISHLIST_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
   } catch (error) {
@@ -83,7 +93,9 @@ export const deleteWishlist = (productId) => async (dispatch) => {
   dispatch({ type: WISHLIST_DELETE_REQUEST, payload: productId });
 
   try {
-    const { data } = await Axios.put(`/api/wishlist/remove/${productId}`);
+    const { data } = await Axios.put(
+      `${process.env.REACT_APP_URL}/api/wishlist/remove/${productId}`
+    );
     dispatch({ type: WISHLIST_DELETE_SUCCESS, payload: data });
   } catch (error) {
     const message =
