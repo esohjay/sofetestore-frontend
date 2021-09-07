@@ -64,8 +64,14 @@ export default function RegisterScreen(props) {
               Create an account
             </Heading>
           </Stack>
-          {loading && <LoadingBox></LoadingBox>}
-          {error && <MessageBox variant="danger">{error}</MessageBox>}
+          {loading && <LoadingBox size="md"></LoadingBox>}
+          {error && (
+            <MessageBox
+              status="error"
+              description={error}
+              title="Oops"
+            ></MessageBox>
+          )}
           <form onSubmit={submitHandler}>
             <Box
               rounded={"lg"}

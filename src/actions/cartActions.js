@@ -39,18 +39,13 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-export const createCart = (productId, size) => async (dispatch, getState) => {
+export const createCart = (productId, size) => async (dispatch) => {
   dispatch({ type: CART_CREATE_REQUEST, payload: productId });
-  const {
-    userSignin: { userInfo },
-  } = getState();
+
   try {
     const { data } = await Axios.post(
       `${process.env.REACT_APP_URL}/api/cart/${productId}`,
-      size,
-      {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      }
+      size
     );
     dispatch({ type: CART_CREATE_SUCCESS, payload: data.cart });
   } catch (error) {
@@ -62,18 +57,13 @@ export const createCart = (productId, size) => async (dispatch, getState) => {
   }
 };
 
-export const updateCart = (productId, info) => async (dispatch, getState) => {
+export const updateCart = (productId, info) => async (dispatch) => {
   dispatch({ type: CART_UPDATE_REQUEST, payload: productId });
-  const {
-    userSignin: { userInfo },
-  } = getState();
+
   try {
     const { data } = await Axios.put(
       `${process.env.REACT_APP_URL}/api/cart/update/${productId}`,
-      info,
-      {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      }
+      info
     );
     dispatch({ type: CART_UPDATE_SUCCESS, payload: data.cart });
   } catch (error) {
@@ -84,17 +74,12 @@ export const updateCart = (productId, info) => async (dispatch, getState) => {
     dispatch({ type: CART_UPDATE_FAIL, payload: message });
   }
 };
-export const removeCartItem = (productId) => async (dispatch, getState) => {
+export const removeCartItem = (productId) => async (dispatch) => {
   dispatch({ type: CART_REMOVE_REQUEST, payload: productId });
-  const {
-    userSignin: { userInfo },
-  } = getState();
+
   try {
     const { data } = await Axios.put(
-      `${process.env.REACT_APP_URL}/api/cart/remove/${productId}`,
-      {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      }
+      `${process.env.REACT_APP_URL}/api/cart/remove/${productId}`
     );
     dispatch({ type: CART_REMOVE_SUCCESS, payload: data.cart });
   } catch (error) {

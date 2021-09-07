@@ -38,7 +38,7 @@ export default function WishlistButton(props) {
       dispatch(createWishlist(product._id, { size }));
       //dispatch(detailsWishlist());
     } else {
-      alert("Please enter comment and rating");
+      alert("Please select Size");
     }
   };
   return (
@@ -108,7 +108,16 @@ export default function WishlistButton(props) {
               <Button ref={cancelRef} onClick={onClose}>
                 Continue Shopping
               </Button>
-              <Button colorScheme="red" onClick={wishlistHandler} ml={3}>
+              <Button
+                color="yellow.400"
+                backgroundColor="blue.900"
+                _hover={{
+                  color: "blue.900",
+                  backgroundColor: "yellow.400",
+                }}
+                onClick={wishlistHandler}
+                ml={3}
+              >
                 Add to Wishlist
               </Button>
             </AlertDialogFooter>

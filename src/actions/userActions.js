@@ -56,7 +56,7 @@ export const signout = () => (dispatch) => {
   document.location.href = "/signin";
 };
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (name, email, password, phone) => async (dispatch) => {
   dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
   try {
     const { data } = await Axios.post(
@@ -65,6 +65,7 @@ export const register = (name, email, password) => async (dispatch) => {
         name,
         email,
         password,
+        phone,
       }
     );
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });

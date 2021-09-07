@@ -40,7 +40,7 @@ export default function CartButton(props) {
       dispatch(createCart(product._id, { size }));
       //dispatch(detailsCart());
     } else {
-      alert("Please enter comment and rating");
+      alert("Please select Size");
     }
   };
   return (
@@ -108,7 +108,16 @@ export default function CartButton(props) {
               <Button ref={cancelRef} onClick={onClose}>
                 Continue Shopping
               </Button>
-              <Button colorScheme="red" onClick={addHandler} ml={3}>
+              <Button
+                color="yellow.400"
+                backgroundColor="blue.900"
+                _hover={{
+                  color: "blue.900",
+                  backgroundColor: "yellow.400",
+                }}
+                onClick={addHandler}
+                ml={3}
+              >
                 Add to Cart
               </Button>
             </AlertDialogFooter>
