@@ -26,11 +26,11 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 
 export default function VariationScreen(props) {
   const productId = props.match.params.id;
-  const [name, setName] = useState("");
+
   const [varType, setVarType] = useState("");
   const [value, setValue] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [variation, setVariation] = useState([]);
+  // const [variation, setVariation] = useState([]);
 
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -53,10 +53,10 @@ export default function VariationScreen(props) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(detailsProduct(productId));
     } else if (product.variation.length) {
-      setVariation(product.variation);
+      //setVariation(product.variation);
       dispatch(detailsProduct(productId));
     }
-  }, [dispatch, productId, successCreate, successUpdate]);
+  }, [dispatch, productId, successCreate, successUpdate, product]);
   console.log("variation");
   console.log(product);
   const varVal = {

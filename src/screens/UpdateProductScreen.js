@@ -63,7 +63,7 @@ export default function UpdateProductScreen(props) {
 
       setTag(product.tag);
     }
-  }, [product, dispatch, productId, props.history]);
+  }, [product, dispatch, productId, props.history, successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();

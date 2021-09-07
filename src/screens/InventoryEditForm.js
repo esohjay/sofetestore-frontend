@@ -29,7 +29,7 @@ export default function UpdateForm({ inventory }) {
       setDate(inventory.date);
       setOrigin(inventory.origin);
     }
-  }, []);
+  }, [inventory]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(

@@ -5,20 +5,7 @@ import { listProducts } from "../actions/productActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Product from "../components/Product";
-import {
-  Box,
-  Center,
-  SimpleGrid,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  useMediaQuery,
-  Divider,
-  Portal,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, SimpleGrid, Text } from "@chakra-ui/react";
 export default function SearchScreen(props) {
   const { name = "all" } = useParams();
   const dispatch = useDispatch();

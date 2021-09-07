@@ -6,9 +6,9 @@ import MessageBox from "../components/MessageBox";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
-import { detailsCart } from "../actions/cartActions";
+
 import { subscribe } from "../actions/userActions";
-import { detailsWishlist } from "../actions/wishlistActions";
+
 import CartButton from "../components/CartButton";
 import {
   Box,
@@ -62,7 +62,7 @@ export default function HomeScreen() {
   return (
     <div>
       <Slider />
-      <Box mb="35px" mt="0">
+      <Box my="35px">
         <Center>
           <VStack>
             <Heading as="h3" size="lg" color="blue.900">
@@ -197,9 +197,13 @@ export default function HomeScreen() {
             </Text>
             <Stack direction={"row"}>
               <Button
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{ bg: "blue.500" }}
+                color="blue.900"
+                backgroundColor="yellow.400"
+                _hover={{
+                  color: "yellow.400",
+                  backgroundColor: "blue.900",
+                }}
+                px={6}
               >
                 Explore
               </Button>
@@ -320,9 +324,14 @@ export default function HomeScreen() {
         )}
         <Center>
           <VStack w="65%" bg="white" shadow="lg" spacing="30px" p="30px">
-            <Heading textAlign="center" color="blue.900">
+            <Text
+              textAlign="center"
+              color="blue.900"
+              fontWeight="bold"
+              fontSize={{ base: "lg", sm: "xl", md: "2xl" }}
+            >
               Be Among The First To Know About New Products
-            </Heading>
+            </Text>
             <FormControl id="email" isRequired w="70%">
               <FormLabel>Email address</FormLabel>
               <Input

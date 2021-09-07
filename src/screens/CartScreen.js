@@ -27,7 +27,7 @@ import { CART_CREATE_RESET } from "../constants/cartConstants";
 export default function CartScreen(props) {
   //const productId = props.match.params.id;
   const cartDetails = useSelector((state) => state.cartDetails);
-  const { loading, allItems, success, error, items } = cartDetails;
+  const { loading, error, items } = cartDetails;
   const cartUpdate = useSelector((state) => state.cartUpdate);
   const { success: updateSuccess } = cartUpdate;
   // const cartRemove = useSelector((state) => state.cartRemove);

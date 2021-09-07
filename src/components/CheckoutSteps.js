@@ -1,5 +1,5 @@
 import React from "react";
-import { Center, SimpleGrid, Text, Box, Stack } from "@chakra-ui/react";
+import { Center, Text, Box, Stack } from "@chakra-ui/react";
 export default function CheckoutSteps(props) {
   return (
     <Box m="1rem">

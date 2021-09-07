@@ -6,15 +6,7 @@ import { deliverOrder, detailsOrder } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { ORDER_DELIVER_RESET } from "../constants/orderConstants";
-import {
-  Center,
-  Divider,
-  Button,
-  Text,
-  HStack,
-  Box,
-  VStack,
-} from "@chakra-ui/react";
+import { Divider, Button, Text, Box, VStack } from "@chakra-ui/react";
 
 export default function OrderScreen(props) {
   const orderId = props.match.params.id;

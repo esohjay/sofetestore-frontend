@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
-
+import { Link } from "react-router-dom";
 import { Box, Heading, Text, Button, Stack } from "@chakra-ui/react";
 import data from "../data";
 export default function Slider(props) {
@@ -85,17 +85,19 @@ export default function Slider(props) {
                       alignSelf={"center"}
                       position={"relative"}
                     >
-                      <Button
-                        colorScheme={"green"}
-                        bg={"green.400"}
-                        rounded={"full"}
-                        px={6}
-                        _hover={{
-                          bg: "green.500",
-                        }}
-                      >
-                        {slide.btn}
-                      </Button>
+                      <Link to="/shop">
+                        <Button
+                          color="blue.900"
+                          backgroundColor="yellow.400"
+                          _hover={{
+                            color: "yellow.400",
+                            backgroundColor: "blue.900",
+                          }}
+                          px={6}
+                        >
+                          {slide.btn}
+                        </Button>
+                      </Link>
                     </Stack>
                   </Stack>
                 </Box>

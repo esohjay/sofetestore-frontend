@@ -2,26 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { findWishlistDetails } from "../actions/wishlistActions";
-import LoadingBox from "../components/LoadingBox";
+
 import MessageBox from "../components/MessageBox";
 import {
   Stack,
   HStack,
   Box,
-  Flex,
   Spacer,
   Input,
   useMediaQuery,
-  SearchIcon,
   Text,
   Grid,
   FormControl,
-  FormLabel,
   Button,
   Image,
   SimpleGrid,
   Center,
-  IconButton,
   GridItem,
 } from "@chakra-ui/react";
 
@@ -29,7 +25,7 @@ export default function FindWishlistScreen(props) {
   //const productId = props.match.params.id;
   const [wishlist, setWishlist] = useState("");
   const findWishlist = useSelector((state) => state.findWishlist);
-  const { success, error, items } = findWishlist;
+  const { error, items } = findWishlist;
 
   const dispatch = useDispatch();
   useEffect(() => {

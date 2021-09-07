@@ -33,7 +33,7 @@ export default function EditSales({ sales }) {
       setSize(sales.size);
       setBatch(sales.batch);
     }
-  }, []);
+  }, [sales]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(

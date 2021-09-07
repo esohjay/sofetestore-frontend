@@ -1,28 +1,10 @@
 import React from "react";
 
 import { Link } from "react-router-dom";
-import {
-  Box,
-  Flex,
-  Center,
-  HStack,
-  Badge,
-  Image,
-  Circle,
-  Button,
-  Menu,
-  Grid,
-  GridItem,
-  VStack,
-  Input,
-  StarIcon,
-  useColorModeValue,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, HStack, Image, Text } from "@chakra-ui/react";
 import CartButton from "../components/CartButton";
 import WishlistButton from "../components/WishlistButton";
-import { FaRegHeart, FaHeart, FaShoppingBasket } from "react-icons/fa";
+
 export default function Product(props) {
   const { product, items, wishlistItems } = props;
   return (

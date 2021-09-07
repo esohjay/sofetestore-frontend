@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+
 import { detailsProduct, manageImages } from "../actions/productActions";
 import Axios from "axios";
 import LoadingBox from "../components/LoadingBox";
@@ -32,7 +32,6 @@ export default function ManageImageScreen(props) {
   const { loading, error, product } = productDetails;
   const productImages = useSelector((state) => state.productImages);
   const {
-    loading: imgLoading,
     error: imgError,
     success: imgSuccess,
     product: imgProduct,

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+
 import { enquiry } from "../actions/userActions";
-import LoadingBox from "../components/LoadingBox";
+
 import MessageBox from "../components/MessageBox";
 import { ENQUIRY_RESET } from "../constants/userConstants";
 import {
@@ -16,7 +16,6 @@ import {
   Button,
   Heading,
   useColorModeValue,
-  useToast,
 } from "@chakra-ui/react";
 
 export default function SigninScreen(props) {
@@ -24,13 +23,10 @@ export default function SigninScreen(props) {
   const [message, setMessage] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
-  const [active, setActive] = useState(true);
-  const redirect = props.location.search
-    ? props.location.search.split("=")[1]
-    : "/";
+  // const [active, setActive] = useState(true);
 
   const enquiryState = useSelector((state) => state.enquiry);
-  const { success, loading, error } = enquiryState;
+  const { success, error } = enquiryState;
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
