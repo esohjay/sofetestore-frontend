@@ -12,7 +12,6 @@ import {
   MenuItem,
   useMediaQuery,
   Divider,
-  Portal,
   Text,
 } from "@chakra-ui/react";
 import SearchBox from "../components/SearchBox";
@@ -122,17 +121,6 @@ export default function Navbar({ float }) {
                     </Text>
                   </Link>
                 ))}
-                <Menu>
-                  <MenuButton>Open menu</MenuButton>
-                  <Portal>
-                    <MenuList>
-                      <MenuItem>Menu 1</MenuItem>
-                      <MenuItem>New Window</MenuItem>
-                      <MenuItem>Open Closed Tab</MenuItem>
-                      <MenuItem>Open File</MenuItem>
-                    </MenuList>
-                  </Portal>
-                </Menu>
               </HStack>
             </HStack>
 

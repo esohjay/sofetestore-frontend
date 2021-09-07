@@ -48,7 +48,7 @@ export const listProducts =
     });
     try {
       const { data } = await Axios.get(
-        `/api/products?name=${name}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
+        `https://sofetestore.herokuapp.com/api/products?name=${name}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
       );
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
@@ -59,7 +59,9 @@ export const listProducts =
 export const detailsProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
   try {
-    const { data } = await Axios.get(`/api/products/${productId}`);
+    const { data } = await Axios.get(
+      `https://sofetestore.herokuapp.com/api/products/${productId}`
+    );
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -81,11 +83,15 @@ export const createProduct = (product) => async (dispatch, getState) => {
     userSignin: { userInfo },
   } = getState();
   try {
-    const { data } = await Axios.post("/api/products", product, {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
+    const { data } = await Axios.post(
+      "https://sofetestore.herokuapp.com/api/products",
+      product,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
     dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -105,7 +111,10 @@ export const updateProduct = (product) => async (dispatch) => {
   });
 
   try {
-    const { data } = await Axios.put(`/api/products/${product._id}`, product);
+    const { data } = await Axios.put(
+      `https://sofetestore.herokuapp.com/api/products/${product._id}`,
+      product
+    );
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -125,7 +134,7 @@ export const manageImages = (product) => async (dispatch) => {
 
   try {
     const { data } = await Axios.put(
-      `/api/products/${product._id}/manageimages`,
+      `https://sofetestore.herokuapp.com/api/products/${product._id}/manageimages`,
       product
     );
     dispatch({ type: PRODUCT_IMAGES_SUCCESS, payload: data });
@@ -145,7 +154,9 @@ export const deleteProduct = (productId) => async (dispatch) => {
     type: PRODUCT_DELETE_REQUEST,
   });
   try {
-    const { data } = await Axios.delete(`/api/products/${productId}`);
+    const { data } = await Axios.delete(
+      `https://sofetestore.herokuapp.com/api/products/${productId}`
+    );
     dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -165,7 +176,7 @@ export const createReview =
     } = getState();
     try {
       const { data } = await Axios.post(
-        `/api/products/${productId}/reviews`,
+        `https://sofetestore.herokuapp.com/api/products/${productId}/reviews`,
         review,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -190,7 +201,7 @@ export const createVariation = (variation) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.post(
-      `/api/products/${variation._id}/variation`,
+      `https://sofetestore.herokuapp.com/api/products/${variation._id}/variation`,
       variation,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -212,7 +223,9 @@ export const createVariation = (variation) => async (dispatch, getState) => {
 export const dealProduct = (productId) => async (dispatch) => {
   dispatch({ type: PRODUCT_DEAL_REQUEST, payload: productId });
   try {
-    const { data } = await Axios.put(`/api/products/${productId}/hotdeal`);
+    const { data } = await Axios.put(
+      `https://sofetestore.herokuapp.com/api/products/${productId}/hotdeal`
+    );
     dispatch({ type: PRODUCT_DEAL_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -231,7 +244,7 @@ export const updateVariation = (info) => async (dispatch, getState) => {
   } = getState();
   try {
     const { data } = await Axios.put(
-      `/api/products/variationupdate/${info.id}`,
+      `https://sofetestore.herokuapp.com/api/products/variationupdate/${info.id}`,
       info,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
