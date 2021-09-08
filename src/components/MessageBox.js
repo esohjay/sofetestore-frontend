@@ -9,19 +9,19 @@ import {
   AlertDescription,
   CloseButton,
 } from "@chakra-ui/react";
-export default function MessageBox({ title, description, status }) {
+export default function MessageBox({ title, description, status, reset = {} }) {
   const [active, setActive] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
     const disappear = setTimeout(() => {
       setActive(false);
 
-      //dispatch({ type: reset });
+      dispatch({ type: reset });
     }, 3000);
     return () => {
       clearTimeout(disappear);
     };
-  }, [dispatch]);
+  }, [dispatch, reset]);
   return (
     <div id="overlay">
       <Center>
