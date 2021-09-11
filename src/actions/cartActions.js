@@ -46,7 +46,7 @@ export const createCart = (productId, size) => async (dispatch) => {
     const { data } = await Axios.post(
       `${process.env.REACT_APP_URL}/api/cart/${productId}`,
       size,
-      { mode: "cors", credentials: "include" }
+      { withCredentials: true }
     );
     dispatch({ type: CART_CREATE_SUCCESS, payload: data.cart });
   } catch (error) {
@@ -65,7 +65,7 @@ export const updateCart = (productId, info) => async (dispatch) => {
     const { data } = await Axios.put(
       `${process.env.REACT_APP_URL}/api/cart/update/${productId}`,
       info,
-      { mode: "cors", credentials: "include" }
+      { withCredentials: true }
     );
     dispatch({ type: CART_UPDATE_SUCCESS, payload: data.cart });
   } catch (error) {
@@ -82,7 +82,7 @@ export const removeCartItem = (productId) => async (dispatch) => {
   try {
     const { data } = await Axios.put(
       `${process.env.REACT_APP_URL}/api/cart/remove/${productId}`,
-      { mode: "cors", credentials: "include" }
+      { withCredentials: true }
     );
     dispatch({ type: CART_REMOVE_SUCCESS, payload: data.cart });
   } catch (error) {
@@ -100,7 +100,7 @@ export const detailsCart = () => async (dispatch) => {
   try {
     const { data } = await Axios.get(
       `${process.env.REACT_APP_URL}/api/cart/cartitems`,
-      { mode: "cors", credentials: "include" }
+      { withCredentials: true }
     );
     dispatch({ type: CART_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
@@ -119,8 +119,7 @@ export const deleteCart = () => async (dispatch) => {
   });
   try {
     const { data } = await Axios.put(`${process.env.REACT_APP_URL}/api/cart`, {
-      mode: "cors",
-      credentials: "include",
+      withCredentials: true,
     });
     dispatch({ type: CART_DELETE_SUCCESS, payload: data });
   } catch (error) {
