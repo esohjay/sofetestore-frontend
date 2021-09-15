@@ -297,7 +297,7 @@ export default function AllProductsScreen() {
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
               <SimpleGrid
-                minChildWidth={{ base: "160px", md: "180px" }}
+                minChildWidth={{ base: "220px", md: "220px" }}
                 spacing="30px"
                 justifyItems="center"
               >
