@@ -10,6 +10,7 @@ import {
 } from "./reducers/cartReducers";
 import {
   wishlistCreateReducer,
+  wishItemsReducer,
   wishlistUpdateReducer,
   wishlistDeleteReducer,
   wishlistDetailsReducer,
@@ -47,6 +48,7 @@ import {
   orderCreateReducer,
   orderMineListReducer,
   orderListReducer,
+  orderTrackReducer,
   orderDeleteReducer,
   orderDeliverReducer,
   orderDetailsReducer,
@@ -61,6 +63,7 @@ import {
   subscriptionReducer,
   userDeleteReducer,
   userUpdateReducer,
+  bulkMailReducer,
   userUpdateProfileReducer,
 } from "./reducers/userReducers";
 
@@ -70,6 +73,11 @@ const initialState = {
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null,
   },
+  wishItems: {
+    wishlistId: localStorage.getItem("wishlistId")
+      ? JSON.parse(localStorage.getItem("wishlistId"))
+      : { idWishlist: "empty" },
+  },
   cart: {
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -77,16 +85,10 @@ const initialState = {
     shippingAddress: localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
       : {},
-    shippingMethod: localStorage.getItem("shippingMethod")
-      ? JSON.parse(localStorage.getItem("shippingMethod"))
-      : {},
+    cartId: localStorage.getItem("cartId")
+      ? JSON.parse(localStorage.getItem("cartId"))
+      : { idCart: "empty" },
   },
-  /* cartDetails: {
-    myCartDetails: localStorage.getItem("myCartDetails")
-      ? JSON.parse(localStorage.getItem("myCartDetails"))
-      : [],
-    
-  },*/
 };
 
 const reducer = combineReducers({
@@ -107,6 +109,7 @@ const reducer = combineReducers({
   userUpdate: userUpdateReducer,
   orderCreate: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderTrack: orderTrackReducer,
   orderMineList: orderMineListReducer,
   orderList: orderListReducer,
   orderDelete: orderDeleteReducer,
@@ -122,6 +125,7 @@ const reducer = combineReducers({
   wishlistDelete: wishlistDeleteReducer,
   wishlistCreate: wishlistCreateReducer,
   wishlistDetails: wishlistDetailsReducer,
+  wishItems: wishItemsReducer,
   findWishlist: findWishlistDetailsReducer,
   userUpdateProfile: userUpdateProfileReducer,
   inventoryCreate: inventoryCreateReducer,
@@ -138,6 +142,7 @@ const reducer = combineReducers({
   salesList: salesListReducer,
   salesDelete: salesDeleteReducer,
   salesBatch: salesBatchReducer,
+  bulkMail: bulkMailReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(

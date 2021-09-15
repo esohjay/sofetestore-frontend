@@ -104,6 +104,7 @@ export default function AllProductsScreen() {
             <Button
               leftIcon={<FaFilter />}
               color="yellow.400"
+              px="23px"
               backgroundColor="blue.900"
               _hover={{
                 color: "blue.900",
@@ -211,9 +212,8 @@ export default function AllProductsScreen() {
                                           {Array(i + 1)
                                             .fill("")
                                             .map((_, i) => (
-                                              <HStack>
+                                              <HStack key={i}>
                                                 <StarIcon
-                                                  key={i}
                                                   color={"yellow.500"}
                                                 />
                                               </HStack>
@@ -302,14 +302,13 @@ export default function AllProductsScreen() {
                 justifyItems="center"
               >
                 {products.map((product) => (
-                  <>
+                  <Box key={product._id}>
                     <Product
-                      key={product._id}
                       product={product}
                       items={items}
                       wishlistItems={wishlistItems}
                     ></Product>
-                  </>
+                  </Box>
                 ))}
               </SimpleGrid>
             </Box>

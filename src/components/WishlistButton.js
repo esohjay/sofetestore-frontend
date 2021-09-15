@@ -23,6 +23,8 @@ export default function WishlistButton(props) {
   const [isOpen, setIsOpen] = React.useState(false);
   const wishlistCreate = useSelector((state) => state.wishlistCreate);
   const { success: successWishlistCreate } = wishlistCreate;
+  const wishItems = useSelector((state) => state.wishItems);
+  const { wishlistId } = wishItems;
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
   const [size, setSize] = useState("");
@@ -35,7 +37,9 @@ export default function WishlistButton(props) {
   const dispatch = useDispatch();
   const wishlistHandler = () => {
     if (size) {
-      dispatch(createWishlist(product._id, { size }));
+      dispatch(
+        createWishlist(product._id, { size, wishlistId: wishlistId.idWishlist })
+      );
       //dispatch(detailsWishlist());
     } else {
       alert("Please select Size");

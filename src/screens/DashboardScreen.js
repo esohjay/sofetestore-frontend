@@ -1,139 +1,257 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { listOrders } from "../actions/orderActions";
+import { allSales } from "../actions/salesActions";
+import { listProducts } from "../actions/productActions";
+import { listUsers } from "../actions/userActions";
 
-import { deliverOrder, detailsOrder } from "../actions/orderActions";
-
-import LoadingBox from "../components/LoadingBox";
-import MessageBox from "../components/MessageBox";
-import { ORDER_DELIVER_RESET } from "../constants/orderConstants";
-import { Divider, Button, Text, Box, VStack } from "@chakra-ui/react";
+import { Text, Box, VStack, SimpleGrid } from "@chakra-ui/react";
 
 export default function OrderScreen(props) {
-  const orderId = props.match.params.id;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
-  const orderDetails = useSelector((state) => state.orderDetails);
-  const { order, loading, error } = orderDetails;
-  const orderDeliver = useSelector((state) => state.orderDeliver);
-  const {
-    loading: loadingDeliver,
-    error: errorDeliver,
-    success: successDeliver,
-  } = orderDeliver;
-  const goHomeHandler = () => {
-    props.history.push(`/shop`);
-  };
+
+  const productList = useSelector((state) => state.productList);
+  const { products } = productList;
+  const userList = useSelector((state) => state.userList);
+  const { users } = userList;
+  const salesList = useSelector((state) => state.salesList);
+  const { sales } = salesList;
+  const orderList = useSelector((state) => state.orderList);
+  const { orders } = orderList;
+  let delivered = 0;
+  let pending = 0;
+
+  let returned = 0;
+
+  if (orders) {
+    for (let order of orders) {
+      if (order.isDelivered) {
+        delivered++;
+      } else if (order.deliveryStatus === "Pending") {
+        pending++;
+      } else if (order.deliveryStatus === "Returned") {
+        returned++;
+      }
+    }
+  }
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!order || successDeliver || (order && order._id !== orderId)) {
-      dispatch({ type: ORDER_DELIVER_RESET });
-      dispatch(detailsOrder(orderId));
-    }
-  }, [dispatch, successDeliver, order, orderId]);
-  const deliverHandler = () => {
-    dispatch(deliverOrder(order._id));
-  };
-  return loading ? (
-    <LoadingBox></LoadingBox>
-  ) : error ? (
-    <MessageBox variant="danger">{error}</MessageBox>
-  ) : (
-    <Box>
+    dispatch(listOrders({}));
+    dispatch(listProducts({}));
+    dispatch(allSales({}));
+    dispatch(listUsers());
+  }, [dispatch]);
+
+  return (
+    <Box align="center" justify="center">
+      <Box w="65%" bg="white" shadow="lg" m="2rem" borderRadius="lg">
+        <Text fontSize="1rem" color="blue.900" p={3} fontWeight="700">
+          {userInfo.name}
+        </Text>
+        <Text fontSize="1rem" color="blue.900" p={3} fontWeight="700">
+          {userInfo.phone}
+        </Text>
+        <Text fontSize="1rem" color="blue.900" p={3} fontWeight="700">
+          {userInfo.email}
+        </Text>
+      </Box>
       <Box mx={{ base: "0.1rem", md: "2rem" }} p="2rem">
-        <VStack
-          spacing="1"
-          align="stretch"
-          m={3}
-          p={2}
-          shadow={"md"}
-          backgroundColor="white"
-        >
-          <Text fontSize="1rem" color="blue.900" p={3} fontWeight="700">
-            Order Id: {order._id}
-          </Text>
-        </VStack>
-
-        <VStack
-          spacing="1"
-          align="stretch"
-          m={3}
-          p="2rem"
-          shadow={"md"}
-          backgroundColor="white"
-        >
-          <Text
-            fontSize="1rem"
-            color="blue.900"
-            borderBottomColor="blue.900"
-            borderBottomWidth="1px"
-            p={3}
-            fontWeight="700"
-          >
-            Shipping Details
-          </Text>
-          <Text color="blue.900">
-            Receiver: {order.shippingAddress.fullName}
-          </Text>
-          <Text color="blue.900">
-            Address: {order.shippingAddress.address},{" "}
-            {order.shippingAddress.city},
-          </Text>
-          <Text color="blue.900">State: {order.shippingAddress.state}</Text>
-          <Text color="blue.900">
-            Landmark: {order.shippingAddress.landmark}
-          </Text>
-          <Text color="blue.900">Phone: {order.shippingAddress.phone}</Text>
-
-          <Text
-            fontSize="1rem"
-            color="blue.900"
-            borderBottomColor="blue.900"
-            borderBottomWidth="1px"
-            p={3}
-            fontWeight="700"
-          >
-            Delivery Details
-          </Text>
-          <Box>
-            {order.deliveryStatus === "Delivered" ? (
-              <Text color="blue.900">Delivered at {order.deliveredAt}</Text>
-            ) : (
-              <Text color="blue.900">
-                Delivery Status: {order.deliveryStatus}
-              </Text>
-            )}
-            {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-              <Box>
-                {loadingDeliver && <LoadingBox></LoadingBox>}
-                {errorDeliver && (
-                  <MessageBox variant="danger">{errorDeliver}</MessageBox>
-                )}
-                <Button
-                  colorScheme="green"
-                  variant="outline"
-                  onClick={deliverHandler}
-                  size="sm"
-                >
-                  Deliver Order
-                </Button>
-              </Box>
-            )}
-          </Box>
-          <Divider orientation="horizontal" color="blue.900" />
-          <Text>Tracking Number: {order.trackingNo}</Text>
-          <Text>Payment Date: {order.paidAt}</Text>
-          <Box>
-            <Button
-              color="yellow.400"
-              backgroundColor="blue.900"
-              _hover={{ color: "blue.900", backgroundColor: "yellow.400" }}
-              onClick={goHomeHandler}
+        <SimpleGrid columns={[1, null, 2]} spacing="20px">
+          <Link to="productlist">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
             >
-              Continue Shopping
-            </Button>
-          </Box>
-        </VStack>
+              <Text color="blue.900" fontWeight="medium">
+                Products
+              </Text>
+              {products && products.length > 0 ? (
+                <Text
+                  m="1rem"
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  color="blue.900"
+                >
+                  {products.length}
+                </Text>
+              ) : (
+                <Text color="blue.900" fontWeight="medium">
+                  No product added yet
+                </Text>
+              )}
+              <Text>Number of products on the website</Text>
+            </VStack>
+          </Link>
+          <Link to="/orderlist">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
+            >
+              <Text color="blue.900" fontWeight="medium">
+                Total Orders
+              </Text>
+              {orders && orders.length > 0 ? (
+                <Text
+                  m="1rem"
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  color="blue.900"
+                >
+                  {orders.length}
+                </Text>
+              ) : (
+                <Text color="blue.900" fontWeight="medium">
+                  No Order yet
+                </Text>
+              )}
+              <Text>Total orders placed on the website</Text>
+            </VStack>
+          </Link>
+          <Link to="/orderlist">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
+            >
+              <Text color="blue.900" fontWeight="medium">
+                Delivered Orders: {delivered}
+              </Text>
+
+              <Text color="blue.900" fontWeight="medium">
+                Pending Orders: {pending}
+              </Text>
+
+              <Text color="blue.900" fontWeight="medium">
+                Returned Orders: {returned}
+              </Text>
+            </VStack>
+          </Link>
+          <Link to="/orderlist">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
+            >
+              <Text color="blue.900" fontWeight="medium">
+                Online Sales
+              </Text>
+              {orders && orders.length > 0 ? (
+                <Text
+                  m="1rem"
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  color="blue.900"
+                >
+                  ₦{orders.reduce((a, c) => a + c.totalPrice, 0)}
+                </Text>
+              ) : (
+                <Text color="blue.900" fontWeight="medium">
+                  No sales recorded yet
+                </Text>
+              )}
+              <Text>Amount earned from items sold on the website</Text>
+            </VStack>
+          </Link>
+          <Link to="/sales">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
+            >
+              <Text color="blue.900" fontWeight="medium">
+                Total Sales
+              </Text>
+              {sales && sales.length > 0 ? (
+                <Text
+                  m="1rem"
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  color="blue.900"
+                >
+                  ₦{sales.reduce((a, c) => a + c.price, 0)}
+                </Text>
+              ) : (
+                <Text color="blue.900" fontWeight="medium">
+                  No sales recorded yet
+                </Text>
+              )}
+              <Text>Amount earned from items sold online and offline</Text>
+            </VStack>
+          </Link>
+          <Link to="/userlist">
+            <VStack
+              spacing="1"
+              align="stretch"
+              m={3}
+              p={4}
+              shadow={"lg"}
+              backgroundColor="white"
+              border="solid"
+              borderColor="blue.900"
+              borderWidth="thin"
+              borderRadius="xl"
+            >
+              <Text color="blue.900" fontWeight="medium">
+                Registered Users
+              </Text>
+              {users && users.length > 0 ? (
+                <Text
+                  m="1rem"
+                  fontWeight="bold"
+                  fontSize="3xl"
+                  color="blue.900"
+                >
+                  {users.length}
+                </Text>
+              ) : (
+                <Text color="blue.900" fontWeight="medium">
+                  No Registered user yet
+                </Text>
+              )}
+              <Text>Number of registered users on the website</Text>
+            </VStack>
+          </Link>
+        </SimpleGrid>
       </Box>
     </Box>
   );

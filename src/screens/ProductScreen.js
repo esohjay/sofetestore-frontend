@@ -57,6 +57,10 @@ export default function ProductScreen(props) {
   const { items: wishlistItems } = wishlistDetails;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
+  const cart = useSelector((state) => state.cart);
+  const { cartId } = cart;
+  const wishItems = useSelector((state) => state.wishItems);
+  const { wishlistId } = wishItems;
   const toast = useToast();
   const productReviewCreate = useSelector((state) => state.productReviewCreate);
   const {
@@ -86,15 +90,16 @@ export default function ProductScreen(props) {
       dispatch({ type: PRODUCT_REVIEW_CREATE_RESET });
     }
 
-    dispatch(detailsCart());
-    dispatch(detailsWishlist());
+    dispatch(detailsCart(cartId.idCart));
+    dispatch(detailsWishlist(wishlistId.idWishlist));
 
     dispatch(detailsProduct(productId));
   }, [
     dispatch,
     productId,
+    wishlistId,
     successReviewCreate,
-
+    cartId,
     successWishlistCreate,
     successCartCreate,
   ]);

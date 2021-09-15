@@ -24,6 +24,9 @@ import {
   ENQUIRY_REQUEST,
   ENQUIRY_SUCCESS,
   ENQUIRY_FAIL,
+  BULKMAIL_REQUEST,
+  BULKMAIL_SUCCESS,
+  BULKMAIL_FAIL,
   SUBSCRIPTION_REQUEST,
   SUBSCRIPTION_SUCCESS,
   SUBSCRIPTION_FAIL,
@@ -127,26 +130,31 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   }
 };
 
-export const listUsers = () => async (dispatch, getState) => {
-  dispatch({ type: USER_LIST_REQUEST });
-  try {
-    const {
-      userSignin: { userInfo },
-    } = getState();
-    const { data } = await Axios.get(`${process.env.REACT_APP_URL}/api/users`, {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
-    dispatch({ type: USER_LIST_SUCCESS, payload: data });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: USER_LIST_FAIL, payload: message });
-  }
-};
+export const listUsers =
+  ({ search = "" }) =>
+  async (dispatch, getState) => {
+    dispatch({ type: USER_LIST_REQUEST });
+    try {
+      const {
+        userSignin: { userInfo },
+      } = getState();
+      const { data } = await Axios.get(
+        `${process.env.REACT_APP_URL}/api/users?search=${search}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: USER_LIST_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: USER_LIST_FAIL, payload: message });
+    }
+  };
 export const deleteUser = (userId) => async (dispatch, getState) => {
   dispatch({ type: USER_DELETE_REQUEST, payload: userId });
   const {
@@ -225,5 +233,22 @@ export const subscribe = (message) => async (dispatch) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: SUBSCRIPTION_FAIL, payload: message });
+  }
+};
+export const bulkMailAction = (message) => async (dispatch) => {
+  dispatch({ type: BULKMAIL_REQUEST, payload: message });
+
+  try {
+    const { data } = await Axios.post(
+      `${process.env.REACT_APP_URL}/api/enquiry/bulkmail`,
+      message
+    );
+    dispatch({ type: BULKMAIL_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: BULKMAIL_FAIL, payload: message });
   }
 };

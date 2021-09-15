@@ -49,6 +49,22 @@ export default function HomeScreen() {
   const { success: subscribeSuccess, error: subscribeError } =
     subscriptionState;
 
+  let trending = [];
+  let hotDeal = [];
+  let featured = [];
+  if (products) {
+    for (let product of products) {
+      if (product.tag === "trending") {
+        trending.push(product);
+      }
+      if (product.hotDeal) {
+        hotDeal.push(product);
+      }
+      if (product.tag === "featured") {
+        featured.push(product);
+      }
+    }
+  }
   useEffect(() => {
     dispatch(listProducts({}));
     //dispatch(detailsCart());
@@ -60,7 +76,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <div>
+    <Box>
       <Slider />
       <Box my="35px">
         <Center>
@@ -83,21 +99,18 @@ export default function HomeScreen() {
       ) : (
         <Box m="10px" w="90%" alignItems="center" justifyItems="center">
           <SimpleGrid
-            minChildWidth="180px"
+            minChildWidth="220px"
             spacing="30px"
             justifyItems="center"
           >
-            {products.map((product) => (
-              <>
-                {product.tag === "trending" && (
-                  <Product
-                    key={product._id}
-                    product={product}
-                    items={items}
-                    wishlistItems={wishlistItems}
-                  ></Product>
-                )}
-              </>
+            {trending.map((product) => (
+              <Box key={product._id}>
+                <Product
+                  product={product}
+                  items={items}
+                  wishlistItems={wishlistItems}
+                ></Product>
+              </Box>
             ))}
           </SimpleGrid>
         </Box>
@@ -116,56 +129,47 @@ export default function HomeScreen() {
         <Box w="85%" p={4}>
           <SimpleGrid minChildWidth="300px" spacing="40px">
             {products &&
-              products.map((product) => (
-                <>
-                  {product.hotDeal && (
-                    <Box height="180px" border="solid" borderColor="blue.900">
-                      <Grid
-                        h="100%"
-                        templateRows="repeat(1, 1fr)"
-                        templateColumns="repeat(3, 1fr)"
-                        gap={4}
-                        p="5px"
-                      >
-                        <GridItem rowSpan={1} colSpan={1}>
-                          <Link to={`/product/${product._id}`}>
-                            {" "}
-                            <Image
-                              objectFit="cover"
-                              objectPosition="center center"
-                              boxSize="full"
-                              src={
-                                product.images.length && product.images[0].url
-                              }
-                              alt={product.name}
-                            />
-                          </Link>
-                        </GridItem>
+              hotDeal.map((product) => (
+                <Box key={product._id}>
+                  <Box height="180px" border="solid" borderColor="blue.900">
+                    <Grid
+                      h="100%"
+                      templateRows="repeat(1, 1fr)"
+                      templateColumns="repeat(3, 1fr)"
+                      gap={4}
+                      p="5px"
+                    >
+                      <GridItem rowSpan={1} colSpan={1}>
+                        <Link to={`/product/${product._id}`}>
+                          <Image
+                            objectFit="cover"
+                            objectPosition="center center"
+                            boxSize="full"
+                            src={product.images.length && product.images[0].url}
+                            alt={product.name}
+                          />
+                        </Link>
+                      </GridItem>
 
-                        <GridItem colSpan={2}>
-                          <Stack
-                            align="start"
-                            direction="column"
-                            spacing="10px"
-                          >
-                            <Heading ml={0} size="xs" color="blue.900">
-                              {product.category}
-                            </Heading>
-                            <Heading color="blue.900" size="sm">
-                              <Link to={`/product/${product._id}`}>
-                                {product.name}
-                              </Link>
-                            </Heading>
-                            <Text color="green.500" fontWeight="bold">
-                              ₦{product.price}
-                            </Text>
-                            <CartButton product={product} items={items} />
-                          </Stack>
-                        </GridItem>
-                      </Grid>
-                    </Box>
-                  )}
-                </>
+                      <GridItem colSpan={2}>
+                        <Stack align="start" direction="column" spacing="10px">
+                          <Heading ml={0} size="xs" color="blue.900">
+                            {product.category}
+                          </Heading>
+                          <Heading color="blue.900" size="sm">
+                            <Link to={`/product/${product._id}`}>
+                              {product.name}
+                            </Link>
+                          </Heading>
+                          <Text color="green.500" fontWeight="bold">
+                            ₦{product.price}
+                          </Text>
+                          <CartButton product={product} items={items} />
+                        </Stack>
+                      </GridItem>
+                    </Grid>
+                  </Box>
+                </Box>
               ))}
           </SimpleGrid>
         </Box>
@@ -237,17 +241,16 @@ export default function HomeScreen() {
               spacing="30px"
               justifyItems="center"
             >
-              {products.map((product) => (
-                <>
+              {featured.map((product) => (
+                <Box key={product._id}>
                   {product.tag === "featured" && (
                     <Product
-                      key={product._id}
                       product={product}
                       items={items}
                       wishlistItems={wishlistItems}
                     ></Product>
                   )}
-                </>
+                </Box>
               ))}
             </SimpleGrid>
           </Box>
@@ -354,6 +357,6 @@ export default function HomeScreen() {
           </VStack>
         </Center>
       </Box>
-    </div>
+    </Box>
   );
 }

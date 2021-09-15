@@ -28,6 +28,9 @@ import {
   ENQUIRY_FAIL,
   ENQUIRY_REQUEST,
   ENQUIRY_SUCCESS,
+  BULKMAIL_FAIL,
+  BULKMAIL_REQUEST,
+  BULKMAIL_SUCCESS,
   SUBSCRIPTION_FAIL,
   SUBSCRIPTION_REQUEST,
   SUBSCRIPTION_SUCCESS,
@@ -143,6 +146,21 @@ export const enquiryReducer = (state = { loading: true }, action) => {
     case ENQUIRY_RESET:
       return {};
     case ENQUIRY_FAIL:
+      return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const bulkMailReducer = (state = { loading: true }, action) => {
+  switch (action.type) {
+    case BULKMAIL_REQUEST:
+      return { loading: true };
+    case BULKMAIL_SUCCESS:
+      return { loading: false, enquiry: action.payload, success: true };
+
+    case BULKMAIL_FAIL:
       return { loading: false, error: action.payload };
 
     default:

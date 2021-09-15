@@ -41,6 +41,7 @@ export const listProducts =
     priceMin = 0,
     priceMax = 0,
     order = "",
+    nameSku = "",
   }) =>
   async (dispatch) => {
     dispatch({
@@ -48,7 +49,7 @@ export const listProducts =
     });
     try {
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_URL}/api/products?name=${name}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
+        `${process.env.REACT_APP_URL}/api/products?name=${name}&nameSku=${nameSku}&category=${category}&tag=${tag}&priceMax=${priceMax}&priceMin=${priceMin}&avRating=${avRating}&order=${order}`
       );
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {

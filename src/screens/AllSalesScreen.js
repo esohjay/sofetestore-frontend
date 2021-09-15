@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSales, allSales } from "../actions/salesActions";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import ModalPanel from "../components/Modal";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import EditSales from "../screens/EditSales";
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Text,
@@ -20,10 +21,159 @@ import {
   Button,
   useMediaQuery,
   Flex,
+  FormControl,
+  Input,
+  FormLabel,
+  Wrap,
+  WrapItem,
+  NumberInput,
+  NumberIncrementStepper,
+  NumberInputField,
+  NumberInputStepper,
+  NumberDecrementStepper,
+  Center,
 } from "@chakra-ui/react";
-
+import { FaFilter } from "react-icons/fa";
 import { SALES_UPDATE_RESET } from "../constants/salesConstants";
 import { SALES_DELETE_RESET } from "../constants/salesConstants";
+
+const Filter = () => {
+  const [batch, setBatch] = useState("");
+  const [nameSku, setNameSku] = useState("");
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [dateMin, setDateMin] = useState("");
+  const [dateMax, setDateMax] = useState("");
+  const dispatch = useDispatch();
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // dispatch update user
+    dispatch(
+      allSales({
+        batch,
+        priceMin,
+        priceMax,
+        dateMin,
+        dateMax,
+        nameSku,
+      })
+    );
+  };
+  return (
+    <Box pb={4}>
+      <Stack as={"nav"} spacing={4}>
+        <form className="form" onSubmit={submitHandler}>
+          <FormControl id="batch" h={"100px"} w={"200px"}>
+            <FormLabel>Batch</FormLabel>
+            <Input
+              focusBorderColor="yellow.400"
+              placeholder="Batch"
+              value={batch}
+              color={"yellow.400"}
+              onChange={(e) => setBatch(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="name" h={"100px"} w={"200px"}>
+            <FormLabel>Product Name</FormLabel>
+            <Input
+              focusBorderColor="yellow.400"
+              placeholder="Product name/Sku"
+              value={nameSku}
+              color={"yellow.400"}
+              onChange={(e) => setNameSku(e.target.value)}
+            />
+          </FormControl>
+          <Wrap>
+            <WrapItem>
+              <Center>
+                <Box>
+                  <FormControl id="cost" h={"100px"} w={"100px"}>
+                    <FormLabel>From(₦)</FormLabel>
+                    <NumberInput min={0} step={500}>
+                      <NumberInputField
+                        value={priceMin}
+                        onChange={(e) => setPriceMin(e.target.value)}
+                      />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                </Box>
+              </Center>
+            </WrapItem>
+            <WrapItem>
+              <Center>
+                <Box>
+                  <FormControl id="cost" h={"100px"} w={"100px"}>
+                    <FormLabel>To(₦)</FormLabel>
+                    <NumberInput min={0} step={500}>
+                      <NumberInputField
+                        value={priceMax}
+                        onChange={(e) => setPriceMax(e.target.value)}
+                      />
+                      <NumberInputStepper>
+                        <NumberIncrementStepper />
+                        <NumberDecrementStepper />
+                      </NumberInputStepper>
+                    </NumberInput>
+                  </FormControl>
+                </Box>
+              </Center>
+            </WrapItem>
+          </Wrap>
+          <Wrap>
+            <WrapItem>
+              <Center>
+                <Box>
+                  <FormControl id="date" h={"100px"} w={"100px"}>
+                    <FormLabel>From</FormLabel>
+                    <Input
+                      value={dateMin}
+                      onChange={(e) => setDateMin(e.target.value)}
+                      type="date"
+                      focusBorderColor="yellow.400"
+                      color={"blue.900"}
+                    />
+                  </FormControl>
+                </Box>
+              </Center>
+            </WrapItem>
+            <WrapItem>
+              <Center>
+                <Box>
+                  <FormControl id="date" h={"100px"} w={"100px"}>
+                    <FormLabel>To</FormLabel>
+                    <Input
+                      value={dateMax}
+                      onChange={(e) => setDateMax(e.target.value)}
+                      type="date"
+                      focusBorderColor="yellow.400"
+                      color={"blue.900"}
+                    />
+                  </FormControl>
+                </Box>
+              </Center>
+            </WrapItem>
+          </Wrap>
+
+          <HStack>
+            <Button
+              variant="outline"
+              color="yellow.400"
+              borderColor
+              size="sm"
+              type="submit"
+            >
+              Filter
+            </Button>
+          </HStack>
+        </form>
+      </Stack>
+    </Box>
+  );
+};
 
 export default function AllSalesScreen() {
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
@@ -35,7 +185,7 @@ export default function AllSalesScreen() {
   const { success: salesUpdateSuccess } = salesUpdate;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(allSales());
+    dispatch(allSales({}));
   }, [dispatch, salesUpdateSuccess, salesDeleteSuccess]);
   const deleteSalesHandler = (id) => {
     dispatch(deleteSales(id));
@@ -82,6 +232,17 @@ export default function AllSalesScreen() {
             ( {sales.length} sales)
           </Text>
         )}
+        <Center>
+          <HStack>
+            <ModalPanel
+              content={<Filter />}
+              title="Filter"
+              footer="yes"
+              variant={<FaFilter />}
+            />
+            <Text>Filter</Text>
+          </HStack>
+        </Center>
         {loading ? (
           <LoadingBox size="md"></LoadingBox>
         ) : error ? (
@@ -177,6 +338,7 @@ export default function AllSalesScreen() {
                           <ModalPanel
                             content={<EditSales sales={sale} />}
                             title="Edit Batch"
+                            variant={<EditIcon />}
                           />
                           <Alert
                             text={`Delete ${sale.name}?`}
@@ -240,6 +402,7 @@ export default function AllSalesScreen() {
                             <ModalPanel
                               content={<EditSales sales={sale} />}
                               title="Edit Sales"
+                              variant={<EditIcon />}
                             />
                             <Alert
                               text={`Delete ${sale.name}?`}

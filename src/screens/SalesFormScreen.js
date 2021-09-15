@@ -7,6 +7,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { SALES_CREATE_RESET } from "../constants/salesConstants";
 import { Link } from "react-router-dom";
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Box,
   FormLabel,
@@ -127,7 +128,7 @@ export default function SalesFormScreen(props) {
               content={<PickProduct />}
               title="Select Product"
               footer="yes"
-              variant="add"
+              variant={<AddIcon />}
             />
           </HStack>
           <form onSubmit={submitHandler}>

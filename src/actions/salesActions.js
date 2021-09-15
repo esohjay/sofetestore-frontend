@@ -89,25 +89,37 @@ export const detailsSales = (id) => async (dispatch, getState) => {
   }
 };
 
-export const allSales = () => async (dispatch, getState) => {
-  dispatch({ type: SALES_LIST_REQUEST });
-  const {
-    userSignin: { userInfo },
-  } = getState();
-  try {
-    const { data } = await Axios.get(`${process.env.REACT_APP_URL}/api/sales`, {
-      headers: { Authorization: `Bearer ${userInfo.token}` },
-    });
-    dispatch({ type: SALES_LIST_SUCCESS, payload: data });
-    //localStorage.setItem("myCartDetails", JSON.stringify(data));
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: SALES_LIST_FAIL, payload: message });
-  }
-};
+export const allSales =
+  ({
+    dateMin = "",
+    dateMax = "",
+    priceMin = "",
+    priceMax = "",
+    batch = "",
+    nameSku = "",
+  }) =>
+  async (dispatch, getState) => {
+    dispatch({ type: SALES_LIST_REQUEST });
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = await Axios.get(
+        `${process.env.REACT_APP_URL}/api/sales?batch=${batch}&nameSku=${nameSku}&priceMin=${priceMin}&priceMax=${priceMax}&dateMin=${dateMin}&dateMax=${dateMax}`,
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: SALES_LIST_SUCCESS, payload: data });
+      //localStorage.setItem("myCartDetails", JSON.stringify(data));
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: SALES_LIST_FAIL, payload: message });
+    }
+  };
 
 export const deleteSales = (productId) => async (dispatch, getState) => {
   dispatch({ type: SALES_DELETE_REQUEST, payload: productId });

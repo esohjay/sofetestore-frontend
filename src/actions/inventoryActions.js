@@ -112,28 +112,37 @@ export const detailsInventory = (id) => async (dispatch, getState) => {
   }
 };
 
-export const allInventory = () => async (dispatch, getState) => {
-  dispatch({ type: INVENTORY_LIST_REQUEST });
-  const {
-    userSignin: { userInfo },
-  } = getState();
-  try {
-    const { data } = await Axios.get(
-      `${process.env.REACT_APP_URL}/api/inventory`,
-      {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      }
-    );
-    dispatch({ type: INVENTORY_LIST_SUCCESS, payload: data });
-    //localStorage.setItem("myCartDetails", JSON.stringify(data));
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: INVENTORY_LIST_FAIL, payload: message });
-  }
-};
+export const allInventory =
+  ({
+    batch = "",
+    origin = "",
+    costMin = 0,
+    costMax = 0,
+    dateMin = "",
+    dateMax = "",
+  }) =>
+  async (dispatch, getState) => {
+    dispatch({ type: INVENTORY_LIST_REQUEST });
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    try {
+      const { data } = await Axios.get(
+        `${process.env.REACT_APP_URL}/api/inventory?batch=${batch}&origin=${origin}&costMin=${costMin}&costMax=${costMax}&dateMin=${dateMin}&dateMax=${dateMax}`,
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: INVENTORY_LIST_SUCCESS, payload: data });
+      //localStorage.setItem("myCartDetails", JSON.stringify(data));
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({ type: INVENTORY_LIST_FAIL, payload: message });
+    }
+  };
 
 export const deleteInventory = (productId) => async (dispatch, getState) => {
   dispatch({ type: INVENTORY_DELETE_REQUEST, payload: productId });

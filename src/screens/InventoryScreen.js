@@ -8,7 +8,7 @@ import ModalPanel from "../components/Modal";
 import UpdateForm from "../screens/InventoryEditForm";
 import EditSales from "../screens/EditSales";
 import { INVENTORY_UPDATE_RESET } from "../constants/inventoryConstants";
-
+import { EditIcon, AddIcon } from "@chakra-ui/icons";
 import { SALES_CREATE_RESET } from "../constants/salesConstants";
 import { SALES_UPDATE_RESET } from "../constants/salesConstants";
 import { SALES_DELETE_RESET } from "../constants/salesConstants";
@@ -299,6 +299,7 @@ export default function InventoryScreen(props) {
                       <ModalPanel
                         content={<UpdateForm inventory={inventory} />}
                         title="Edit Batch"
+                        variant={<EditIcon />}
                       />
                       <Alert
                         text={`Delete ${inventory.batch}?`}
@@ -402,6 +403,7 @@ export default function InventoryScreen(props) {
                         <ModalPanel
                           content={<EditSales sales={sale} />}
                           title="Edit Batch"
+                          variant={<EditIcon />}
                         />
                         <Alert
                           text={`Delete ${sale.name}?`}
@@ -464,6 +466,7 @@ export default function InventoryScreen(props) {
                           <ModalPanel
                             content={<EditSales sales={sale} />}
                             title="Edit Sales"
+                            variant={<EditIcon />}
                           />
                           <Alert
                             text={`Delete ${sale.name}?`}
@@ -515,7 +518,7 @@ export default function InventoryScreen(props) {
               content={<PickProduct />}
               title="Select Product"
               footer="yes"
-              variant="add"
+              variant={<AddIcon />}
             />
           </HStack>
           <form onSubmit={submitHandler}>

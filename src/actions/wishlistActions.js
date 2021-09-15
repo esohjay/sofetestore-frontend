@@ -17,15 +17,16 @@ import {
   WISHLIST_DELETE_SUCCESS,
 } from "../constants/wishlistConstants";
 
-export const createWishlist = (productId, size) => async (dispatch) => {
+export const createWishlist = (productId, info) => async (dispatch) => {
   dispatch({ type: WISHLIST_CREATE_REQUEST, payload: productId });
 
   try {
     const { data } = await Axios.post(
       `${process.env.REACT_APP_URL}/api/wishlist/${productId}`,
-      size
+      info
     );
-    dispatch({ type: WISHLIST_CREATE_SUCCESS, payload: data.wishlist });
+    dispatch({ type: WISHLIST_CREATE_SUCCESS, payload: data });
+    localStorage.setItem("wishlistId", JSON.stringify(data));
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -53,12 +54,12 @@ export const updateWishlist = (productId, info) => async (dispatch) => {
   }
 };
 
-export const detailsWishlist = () => async (dispatch) => {
+export const detailsWishlist = (id) => async (dispatch) => {
   dispatch({ type: WISHLIST_DETAILS_REQUEST });
 
   try {
     const { data } = await Axios.get(
-      `${process.env.REACT_APP_URL}/api/wishlist/wishlistitems`
+      `${process.env.REACT_APP_URL}/api/wishlist/wishlistitems/${id}`
     );
     dispatch({ type: WISHLIST_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));
@@ -94,7 +95,7 @@ export const deleteWishlist = (productId) => async (dispatch) => {
 
   try {
     const { data } = await Axios.put(
-      `${process.env.REACT_APP_URL}/api/wishlist/remove/${productId}`
+      `${process.env.REACT_APP_URL}/api/wishlist/${productId}`
     );
     dispatch({ type: WISHLIST_DELETE_SUCCESS, payload: data });
   } catch (error) {

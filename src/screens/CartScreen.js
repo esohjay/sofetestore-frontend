@@ -30,16 +30,18 @@ export default function CartScreen(props) {
   const { loading, error, items } = cartDetails;
   const cartUpdate = useSelector((state) => state.cartUpdate);
   const { success: updateSuccess } = cartUpdate;
+  const cart = useSelector((state) => state.cart);
+  const { cartId } = cart;
   // const cartRemove = useSelector((state) => state.cartRemove);
   // const {  success: removeSuccess } = cartRemove;
-
+  console.log(cartId);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(detailsCart());
+    dispatch(detailsCart(cartId.idCart));
     dispatch({ type: CART_CREATE_RESET });
-  }, [dispatch, updateSuccess]);
+  }, [dispatch, updateSuccess, cartId]);
   const qtyHandler = (prod, qty, size) => {
-    dispatch(updateCart(prod, { qty, size }));
+    dispatch(updateCart(prod, { qty, size, cartId: cartId.idCart }));
   };
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   /*const removeHandler = (prod) => {
@@ -109,7 +111,7 @@ export default function CartScreen(props) {
             </SimpleGrid>
           )}
           {items.map((item) => (
-            <div key={item.product.id}>
+            <div key={`${item.product.id}${item.size}`}>
               {isLargerThan676 && (
                 <SimpleGrid
                   columns={[3, null, 6]}

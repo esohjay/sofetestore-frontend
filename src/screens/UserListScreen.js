@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, listUsers } from "../actions/userActions";
 import LoadingBox from "../components/LoadingBox";
@@ -15,13 +15,18 @@ import {
   Box,
   HStack,
   IconButton,
+  FormControl,
+  Input,
+  Button,
   Text,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { USER_DELETE_RESET } from "../constants/userConstants";
 export default function UserListScreen(props) {
+  const [search, setSearch] = useState("");
   const userList = useSelector((state) => state.userList);
   const { loading, error, users } = userList;
+
   const userDelete = useSelector((state) => state.userDelete);
   const {
     loading: loadingDelete,
@@ -30,13 +35,16 @@ export default function UserListScreen(props) {
   } = userDelete;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(listUsers());
+    dispatch(listUsers({}));
     dispatch({
       type: USER_DETAILS_RESET,
     });
   }, [dispatch, successDelete]);
   const deleteHandler = (user) => {
     dispatch(deleteUser(user._id));
+  };
+  const submitHandler = () => {
+    dispatch(listUsers({ search }));
   };
   return (
     <Box m="20px">
@@ -54,6 +62,30 @@ export default function UserListScreen(props) {
           ( {users.length} users)
         </Text>
       )}
+      <Box align="center" my="40px">
+        <HStack w="65%">
+          <FormControl id="name" isRequired>
+            <Input
+              focusBorderColor="yellow.400"
+              placeholder="Product name or Sku"
+              color={"yellow.400"}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            color="yellow.400"
+            backgroundColor="blue.900"
+            _hover={{
+              color: "blue.900",
+              backgroundColor: "yellow.400",
+            }}
+            onClick={submitHandler}
+          >
+            Find
+          </Button>
+        </HStack>
+      </Box>
       {loadingDelete && <LoadingBox size="md"></LoadingBox>}
       {errorDelete && (
         <MessageBox

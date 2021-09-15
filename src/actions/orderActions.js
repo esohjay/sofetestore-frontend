@@ -7,9 +7,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
-  ORDER_PAY_REQUEST,
-  ORDER_PAY_FAIL,
-  ORDER_PAY_SUCCESS,
+  ORDER_TRACK_REQUEST,
+  ORDER_TRACK_FAIL,
+  ORDER_TRACK_SUCCESS,
   ORDER_MINE_LIST_REQUEST,
   ORDER_MINE_LIST_FAIL,
   ORDER_MINE_LIST_SUCCESS,
@@ -72,29 +72,22 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
   }
 };
 
-export const payOrder =
-  (order, paymentResult) => async (dispatch, getState) => {
-    dispatch({ type: ORDER_PAY_REQUEST, payload: { order, paymentResult } });
-    const {
-      userSignin: { userInfo },
-    } = getState();
-    try {
-      const { data } = await Axios.put(
-        `${process.env.REACT_APP_URL}/api/orders/${order._id}/pay`,
-        paymentResult,
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
-    } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message;
-      dispatch({ type: ORDER_PAY_FAIL, payload: message });
-    }
-  };
+export const trackOrder = (order) => async (dispatch) => {
+  dispatch({ type: ORDER_TRACK_REQUEST, payload: order });
+
+  try {
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_URL}/api/orders/${order}/track`
+    );
+    dispatch({ type: ORDER_TRACK_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_TRACK_FAIL, payload: message });
+  }
+};
 
 export const listOrderMine = () => async (dispatch, getState) => {
   dispatch({ type: ORDER_MINE_LIST_REQUEST });
@@ -131,7 +124,7 @@ export const listOrders = () => async (dispatch, getState) => {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       }
     );
-    console.log(data);
+
     dispatch({ type: ORDER_LIST_SUCCESS, payload: data });
   } catch (error) {
     const message =
@@ -162,15 +155,15 @@ export const deleteOrder = (orderId) => async (dispatch, getState) => {
     dispatch({ type: ORDER_DELETE_FAIL, payload: message });
   }
 };
-export const deliverOrder = (orderId) => async (dispatch, getState) => {
-  dispatch({ type: ORDER_DELIVER_REQUEST, payload: orderId });
+export const deliverOrder = (info) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELIVER_REQUEST, payload: info });
   const {
     userSignin: { userInfo },
   } = getState();
   try {
     const { data } = Axios.put(
-      `${process.env.REACT_APP_URL}/api/orders/${orderId}/deliver`,
-      {},
+      `${process.env.REACT_APP_URL}/api/orders/${info.id}/deliver`,
+      info,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       }

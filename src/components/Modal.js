@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EditIcon, AddIcon } from "@chakra-ui/icons";
+//import { EditIcon, AddIcon } from "@chakra-ui/icons";
 import {
   Modal,
   ModalOverlay,
@@ -23,7 +23,7 @@ export default function ModalPanel({ content, title, variant, footer = "no" }) {
         variant="outline"
         color="blue.900"
         _hover={{ color: "yellow.400" }}
-        icon={variant === "add" ? <AddIcon /> : <EditIcon />}
+        icon={variant}
         size="xs"
         onClick={onOpen}
       />

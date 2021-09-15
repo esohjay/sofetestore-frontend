@@ -27,6 +27,8 @@ export default function CartButton(props) {
   const [size, setSize] = useState("");
   const cartCreate = useSelector((state) => state.cartCreate);
   const { success: successCartCreate } = cartCreate;
+  const cart = useSelector((state) => state.cart);
+  const { cartId } = cart;
   let cartIds = [];
   if (items && items.length) {
     for (let id of items) {
@@ -37,7 +39,7 @@ export default function CartButton(props) {
 
   const addHandler = () => {
     if (size) {
-      dispatch(createCart(product._id, { size }));
+      dispatch(createCart(product._id, { size, cartId: cartId.idCart }));
       //dispatch(detailsCart());
     } else {
       alert("Please select Size");

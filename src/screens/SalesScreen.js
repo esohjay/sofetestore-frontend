@@ -5,7 +5,7 @@ import { deleteSales, detailsSales } from "../actions/salesActions";
 import { Link } from "react-router-dom";
 import Alert from "../components/Alert";
 import ModalPanel from "../components/Modal";
-
+import { AddIcon } from "@chakra-ui/icons";
 import EditSales from "../screens/EditSales";
 
 import { SALES_UPDATE_RESET } from "../constants/salesConstants";
@@ -159,6 +159,7 @@ export default function SalesScreen(props) {
                       <ModalPanel
                         content={<EditSales sales={sales} />}
                         title="Edit Batch"
+                        variant={<AddIcon />}
                       />
                       <Alert
                         text={`Delete ${sales.name}?`}

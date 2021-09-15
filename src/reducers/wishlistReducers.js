@@ -25,12 +25,24 @@ export const wishlistCreateReducer = (state = {}, action) => {
       return {
         loading: false,
         success: true,
-        cart: action.payload,
+        wishlistId: action.payload,
       };
     case WISHLIST_CREATE_RESET:
       return {};
     case WISHLIST_CREATE_FAIL:
       return { loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export const wishItemsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case WISHLIST_CREATE_SUCCESS:
+      return {
+        wishlistId: action.payload,
+      };
 
     default:
       return state;

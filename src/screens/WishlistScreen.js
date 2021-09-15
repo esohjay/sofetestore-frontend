@@ -32,17 +32,21 @@ export default function WishlistScreen(props) {
   const { loading, wishlistId, error, items } = wishlistDetails;
   const wishlistUpdate = useSelector((state) => state.wishlistUpdate);
   const { success: updateSuccess } = wishlistUpdate;
+  const wishItems = useSelector((state) => state.wishItems);
+  const { wishlistId: wishId } = wishItems;
 
   // const cartRemove = useSelector((state) => state.cartRemove);
   // const {  success: removeSuccess } = cartRemove;
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(detailsWishlist());
+    dispatch(detailsWishlist(wishId.idWishlist));
     dispatch({ type: WISHLIST_CREATE_RESET });
-  }, [dispatch, updateSuccess]);
+  }, [dispatch, wishId, updateSuccess]);
   const qtyHandler = (prod, qty, size) => {
-    dispatch(updateWishlist(prod, { qty, size }));
+    dispatch(
+      updateWishlist(prod, { qty, size, wishlistId: wishId.idWishlist })
+    );
   };
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   /*const removeHandler = (prod) => {
@@ -112,7 +116,7 @@ export default function WishlistScreen(props) {
             </SimpleGrid>
           )}
           {items.map((item) => (
-            <div key={item.product.id}>
+            <div key={`${item.product.id}${item.size}`}>
               {isLargerThan676 && (
                 <SimpleGrid
                   columns={[3, null, 6]}

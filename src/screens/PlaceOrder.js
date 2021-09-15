@@ -31,7 +31,7 @@ export default function PlaceOrder(props) {
   const cart = useSelector((state) => state.cartDetails);
   const { items } = cart;
   const cartLocal = useSelector((state) => state.cart);
-  const { shippingAddress, shippingMethod } = cartLocal;
+  const { shippingAddress, shippingMethod, cartId } = cartLocal;
   if (!shippingMethod) {
     props.history.push("/shippingmethod");
   }
@@ -92,14 +92,14 @@ export default function PlaceOrder(props) {
     onClose,
   };
   useEffect(() => {
-    dispatch(detailsCart());
+    dispatch(detailsCart(cartId.idCart));
 
     if (success) {
-      dispatch(deleteCart());
+      dispatch(deleteCart(cartId.idCart));
       props.history.push(`/order/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [dispatch, success, props.history, order]);
+  }, [dispatch, success, props.history, cartId, order]);
 
   /* const PaystackHookExample = () => {
     const initializePayment = usePaystackPayment(config);
@@ -198,7 +198,7 @@ export default function PlaceOrder(props) {
                 Order Item(s)
               </Text>
               {items.map((item) => (
-                <div key={item.product.id}>
+                <div key={`${item.product.id}${item.size}`}>
                   <Grid
                     templateColumns="repeat(6, 1fr)"
                     alignItems="center"

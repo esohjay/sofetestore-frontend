@@ -41,9 +41,15 @@ export default function FindWishlistScreen(props) {
   return (
     <Box m="1.5rem">
       <Box>
-        {error && <MessageBox variant="danger">{error}</MessageBox>}
+        {error && (
+          <MessageBox
+            status="error"
+            description={error}
+            title="Oops"
+          ></MessageBox>
+        )}
         <HStack>
-          <FormControl id="images" isRequired>
+          <FormControl id="wishlist" isRequired>
             <Input
               focusBorderColor="yellow.400"
               placeholder="Wishlist Id"

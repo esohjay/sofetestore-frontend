@@ -5,7 +5,7 @@ import {
   useMediaQuery,
   Box,
   Flex,
-  Icon,
+  IconButton,
   HStack,
   Text,
 } from "@chakra-ui/react";
@@ -20,6 +20,24 @@ import {
 
 export default function BottomNav() {
   const [isLargerThan676] = useMediaQuery("(min-width: 976px)");
+  const whatsappLink = () => {
+    window.location.href = `https://wa.me/2348079588943?text=Hello%20Sofete%20Store!`;
+  };
+  const twitterLink = () => {
+    window.location.href = `https://twitter.com/SofeteStore`;
+  };
+  const instagramLink = () => {
+    window.location.href = `https://instagram.com/sofete_vintage_store`;
+  };
+  const facebookLink = () => {
+    window.location.href = `https://facebook.com/sofetestore`;
+  };
+  const mailLink = () => {
+    window.location = `mailto:sofetestore@gmail.com`;
+  };
+  const callLink = () => {
+    window.location = `tel:+2348079588943`;
+  };
   return (
     <>
       <Box
@@ -32,24 +50,60 @@ export default function BottomNav() {
         <Flex h={"50px"} alignItems={"center"} justifyContent={"space-between"}>
           <Stack direction={"row"} spacing={6}>
             <HStack>
-              <Icon as={FaPhoneAlt}></Icon>
-              <Text>+2348079588943</Text>
+              <IconButton
+                bg="transparent"
+                size="sm"
+                color="yellow.400"
+                _hover={{ bg: "transparent", color: "yellow.500" }}
+                onClick={callLink}
+                icon={<FaPhoneAlt />}
+              ></IconButton>
+              <IconButton
+                bg="transparent"
+                size="sm"
+                color="yellow.400"
+                _hover={{ bg: "transparent", color: "yellow.500" }}
+                onClick={mailLink}
+                icon={<FaEnvelope />}
+              ></IconButton>
             </HStack>
-            {isLargerThan676 && (
-              <HStack>
-                <Icon as={FaEnvelope}></Icon>
-                <Text>sofetestore@gmail.com</Text>
-              </HStack>
-            )}
           </Stack>
           {isLargerThan676 && (
             <Text>5% discount on all orders completed on the website.</Text>
           )}
           <Stack direction={"row"} spacing={6}>
-            <Icon as={FaTwitter}></Icon>
-            <Icon as={FaFacebook}></Icon>
-            <Icon as={FaInstagram}></Icon>
-            <Icon as={FaWhatsapp}></Icon>
+            <IconButton
+              bg="transparent"
+              size="sm"
+              color="yellow.400"
+              _hover={{ bg: "transparent", color: "yellow.500" }}
+              onClick={twitterLink}
+              icon={<FaTwitter />}
+            ></IconButton>
+            <IconButton
+              bg="transparent"
+              size="sm"
+              color="yellow.400"
+              _hover={{ bg: "transparent", color: "yellow.500" }}
+              onClick={facebookLink}
+              icon={<FaFacebook />}
+            ></IconButton>
+            <IconButton
+              bg="transparent"
+              size="sm"
+              color="yellow.400"
+              _hover={{ bg: "transparent", color: "yellow.500" }}
+              onClick={instagramLink}
+              icon={<FaInstagram />}
+            ></IconButton>
+            <IconButton
+              bg="transparent"
+              size="sm"
+              color="yellow.400"
+              _hover={{ bg: "transparent", color: "yellow.500" }}
+              onClick={whatsappLink}
+              icon={<FaWhatsapp />}
+            ></IconButton>
           </Stack>
         </Flex>
       </Box>

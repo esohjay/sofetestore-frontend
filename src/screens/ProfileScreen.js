@@ -47,7 +47,7 @@ export default function ProfileScreen() {
     } else {
       setName(user.name);
       setEmail(user.email);
-      setEmail(user.phone);
+      setPhone(user.phone);
     }
   }, [dispatch, userInfo._id, user]);
   const submitHandler = (e) => {

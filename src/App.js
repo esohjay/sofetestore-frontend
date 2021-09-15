@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 //import { detailsCart } from "./actions/cartActions";
 import CartScreen from "./screens/CartScreen";
+import TrackOrderScreen from "./screens/TrackOrderScreen";
 import WishlistScreen from "./screens/WishlistScreen";
 import FindWishlistScreen from "./screens/FindWishlistScreen";
 import { Box, useMediaQuery } from "@chakra-ui/react";
@@ -40,6 +41,8 @@ import UserEditScreen from "./screens/UserEditScreen";
 import SalesScreen from "./screens/SalesScreen";
 import SearchScreen from "./screens/SearchScreen";
 import AllProductsScreen from "./screens/AllProductsScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import BulkMailScreen from "./screens/BulkMailScreen";
 
 function App() {
   const [nav, setNav] = useState("");
@@ -74,6 +77,7 @@ function App() {
             component={InventoryFormScreen}
           ></AdminRoute>
           <AdminRoute path="/sales" component={AllSalesScreen}></AdminRoute>
+          <AdminRoute path="/message" component={BulkMailScreen}></AdminRoute>
           <AdminRoute path="/addsales" component={SalesFormScreen}></AdminRoute>
           <AdminRoute
             path="/inventorylist/:id"
@@ -92,6 +96,7 @@ function App() {
             component={FindWishlistScreen}
           ></AdminRoute>
           <Route path="/shop" component={AllProductsScreen}></Route>
+          <Route path="/track" component={TrackOrderScreen}></Route>
           <AdminRoute
             path="/products/:id/edit"
             component={UpdateProductScreen}
@@ -99,6 +104,10 @@ function App() {
           <AdminRoute
             path="/productlist"
             component={ProductListScreen}
+          ></AdminRoute>
+          <AdminRoute
+            path="/dashboard"
+            component={DashboardScreen}
           ></AdminRoute>
           <AdminRoute path="/userlist" component={UserListScreen}></AdminRoute>
           <AdminRoute

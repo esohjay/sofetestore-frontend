@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { deliverOrder, detailsOrder } from "../actions/orderActions";
@@ -6,10 +6,20 @@ import { deliverOrder, detailsOrder } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { ORDER_DELIVER_RESET } from "../constants/orderConstants";
-import { Divider, Button, Text, Box, VStack } from "@chakra-ui/react";
+import {
+  Divider,
+  Button,
+  Text,
+  Box,
+  VStack,
+  FormControl,
+  FormLabel,
+  Select,
+} from "@chakra-ui/react";
 
 export default function OrderScreen(props) {
   const orderId = props.match.params.id;
+  const [status, setStatus] = useState("");
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const orderDetails = useSelector((state) => state.orderDetails);
@@ -32,12 +42,12 @@ export default function OrderScreen(props) {
     }
   }, [dispatch, successDeliver, order, orderId]);
   const deliverHandler = () => {
-    dispatch(deliverOrder(order._id));
+    dispatch(deliverOrder({ id: order._id, status }));
   };
   return loading ? (
-    <LoadingBox></LoadingBox>
+    <LoadingBox size="md"></LoadingBox>
   ) : error ? (
-    <MessageBox variant="danger">{error}</MessageBox>
+    <MessageBox status="error" description={error} title="Oops"></MessageBox>
   ) : (
     <Box>
       <Box mx={{ base: "0.1rem", md: "2rem" }} p="2rem">
@@ -96,7 +106,7 @@ export default function OrderScreen(props) {
             Delivery Details
           </Text>
           <Box>
-            {order.deliveryStatus === "Delivered" ? (
+            {order.isDelivered ? (
               <Text color="blue.900">Delivered at {order.deliveredAt}</Text>
             ) : (
               <Text color="blue.900">
@@ -109,6 +119,21 @@ export default function OrderScreen(props) {
                 {errorDeliver && (
                   <MessageBox variant="danger">{errorDeliver}</MessageBox>
                 )}
+                <FormControl id="region" isRequired>
+                  <FormLabel color="blue.900">Region</FormLabel>
+                  <Select
+                    color="blue.700"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
+                    <option value="">Delievery Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Processed">Processed</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Returned">Returned</option>
+                  </Select>
+                </FormControl>
                 <Button
                   colorScheme="green"
                   variant="outline"

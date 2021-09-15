@@ -45,20 +45,24 @@ export default function Navbar({ float }) {
   const { success: successWishlistCreate } = wishlistCreate;
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
+  const cart = useSelector((state) => state.cart);
+  const { cartId } = cart;
+  const wishItems = useSelector((state) => state.wishItems);
+  const { wishlistId } = wishItems;
   // const { loading, error, products } = productList;
   // let categories = [];
   const dispatch = useDispatch();
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const drawerItems = [
     { to: "/shop", text: "Shop" },
-    { to: "/categories", text: "Categories" },
+    { to: "/track", text: "Track" },
     { to: "/contact", text: "Contact" },
   ];
   useEffect(() => {
-    dispatch(detailsCart());
-    dispatch(detailsWishlist());
+    dispatch(detailsCart(cartId.idCart));
+    dispatch(detailsWishlist(wishlistId.idWishlist));
     //dispatch({ type: CART_CREATE_RESET });
-  }, [dispatch, successCartCreate, successWishlistCreate]);
+  }, [dispatch, successCartCreate, cartId, wishlistId, successWishlistCreate]);
   const handleSearchBar = () => {
     if (!show) {
       setShow(true);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   listProducts,
@@ -23,6 +23,8 @@ import {
   SimpleGrid,
   IconButton,
   GridItem,
+  FormControl,
+  Input,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import { FaFire, FaCalculator, FaImage } from "react-icons/fa";
@@ -35,7 +37,7 @@ export default function ProductListScreen(props) {
   const productDelete = useSelector((state) => state.productDelete);
   const { error: deleteError, deleting, deleted } = productDelete;
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
-
+  const [nameSku, setNameSku] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listProducts({}));
@@ -48,6 +50,9 @@ export default function ProductListScreen(props) {
     dispatch(dealProduct(id));
 
     //props.history.push("/");
+  };
+  const submitHandler = () => {
+    dispatch(listProducts({ nameSku }));
   };
   return (
     <Box m="16px" p="1rem">
@@ -68,7 +73,30 @@ export default function ProductListScreen(props) {
       >
         Products
       </Text>
-
+      <Box align="center">
+        <HStack w="65%">
+          <FormControl id="name" isRequired>
+            <Input
+              focusBorderColor="yellow.400"
+              placeholder="Product name or Sku"
+              color={"yellow.400"}
+              onChange={(e) => setNameSku(e.target.value)}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            color="yellow.400"
+            backgroundColor="blue.900"
+            _hover={{
+              color: "blue.900",
+              backgroundColor: "yellow.400",
+            }}
+            onClick={submitHandler}
+          >
+            Find
+          </Button>
+        </HStack>
+      </Box>
       {deleted && (
         <MessageBox
           status="success"

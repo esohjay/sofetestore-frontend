@@ -12,11 +12,14 @@ import {
   ORDER_LIST_REQUEST,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_FAIL,
-   ORDER_DELETE_REQUEST,
+  ORDER_TRACK_REQUEST,
+  ORDER_TRACK_SUCCESS,
+  ORDER_TRACK_FAIL,
+  ORDER_DELETE_REQUEST,
   ORDER_DELETE_SUCCESS,
   ORDER_DELETE_FAIL,
   ORDER_DELETE_RESET,
-   ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_REQUEST,
   ORDER_DELIVER_SUCCESS,
   ORDER_DELIVER_FAIL,
   ORDER_DELIVER_RESET,
@@ -46,6 +49,18 @@ export const orderDetailsReducer = (
     case ORDER_DETAILS_SUCCESS:
       return { loading: false, order: action.payload };
     case ORDER_DETAILS_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+export const orderTrackReducer = (state = { order: {} }, action) => {
+  switch (action.type) {
+    case ORDER_TRACK_REQUEST:
+      return { loading: true };
+    case ORDER_TRACK_SUCCESS:
+      return { loading: false, order: action.payload, success: true };
+    case ORDER_TRACK_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

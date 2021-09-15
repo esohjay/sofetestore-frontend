@@ -69,7 +69,7 @@ export default function CreateProductScreen(props) {
       >
         Go to products
       </Button>
-      <Box mx="20%" my="20px" p="1rem" shadow="xl" backgroundColor="white">
+      <Box mx="10%" my="20px" p="1rem" shadow="xl" backgroundColor="white">
         <Center>
           <Text fontWeight="bold" size="2rem" color="blue.900">
             Add Product
