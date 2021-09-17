@@ -34,7 +34,7 @@ export default function CartScreen(props) {
   const { cartId } = cart;
   // const cartRemove = useSelector((state) => state.cartRemove);
   // const {  success: removeSuccess } = cartRemove;
-  console.log(cartId);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(detailsCart(cartId.idCart));
