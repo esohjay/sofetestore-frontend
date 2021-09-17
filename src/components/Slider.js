@@ -28,8 +28,15 @@ export default function Slider(props) {
 
   return (
     <>
-      <section className="section">
-        <div className="section-center">
+      <Box>
+        <Box
+          pos="relative"
+          overflow="hidden"
+          display="flex"
+          h={{ base: "300px", md: "400px", lg: "500" }}
+          m={0}
+          textAlign="center"
+        >
           {data.map((slide, personIndex) => {
             let position = "nextSlide";
             if (personIndex === index) {
@@ -110,8 +117,8 @@ export default function Slider(props) {
           <button className="next" onClick={() => setIndex(index + 1)}>
             <FiChevronRight />
           </button>
-        </div>
-      </section>
+        </Box>
+      </Box>
     </>
   );
 }

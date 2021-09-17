@@ -78,7 +78,7 @@ export default function HomeScreen() {
   return (
     <Box>
       <Slider />
-      <Box my="35px">
+      <Box my="65px">
         <Center>
           <VStack>
             <Heading as="h3" size="lg" color="blue.900">
