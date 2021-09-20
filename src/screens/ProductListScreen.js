@@ -166,7 +166,11 @@ export default function ProductListScreen(props) {
                     <Image
                       boxSize="full"
                       objectFit="cover"
-                      src={product.images[0].url}
+                      src={
+                        product.images.length
+                          ? product.images[0].url
+                          : "/images/sofetelogo.jpg"
+                      }
                       alt={product.name}
                       objectPosition="center center"
                       cursor="pointer"
