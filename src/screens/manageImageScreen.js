@@ -174,12 +174,16 @@ export default function ManageImageScreen(props) {
                     onChange={uploadFileHandler}
                   />
                 </FormControl>
-                {loadingUpload && <LoadingBox></LoadingBox>}
+                {loadingUpload && (
+                  <LoadingBox size="md" thickness="sm"></LoadingBox>
+                )}
 
                 {errorUpload && (
-                  <MessageBox variant="danger">
-                    Error While uploading, try again.
-                  </MessageBox>
+                  <MessageBox
+                    status="error"
+                    description="Error from cloudinary"
+                    title="Oops!"
+                  ></MessageBox>
                 )}
                 {imgError && <MessageBox variant="danger">{error}</MessageBox>}
                 <Button
