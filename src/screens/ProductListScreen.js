@@ -167,7 +167,7 @@ export default function ProductListScreen(props) {
                       boxSize="full"
                       objectFit="cover"
                       src={
-                        product.images.length
+                        product.images.length > 0
                           ? product.images[0].url
                           : "/images/sofetelogo.jpg"
                       }
