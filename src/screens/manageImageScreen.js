@@ -122,9 +122,13 @@ export default function ManageImageScreen(props) {
   return (
     <Box>
       {loading ? (
-        <LoadingBox></LoadingBox>
+        <LoadingBox size="md" thickness="sm"></LoadingBox>
       ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
+        <MessageBox
+          status="error"
+          description={error}
+          title="Oops!"
+        ></MessageBox>
       ) : (
         <Box m="20px">
           <Button
