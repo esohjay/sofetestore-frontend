@@ -64,16 +64,12 @@ export default function AllProductsScreen() {
   const { items: wishlistItems } = wishlistDetails;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, prod } = productList;
-  let [productBatch, setProductBatch] = useState(products);
+  const [productBatch, setProductBatch] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   // const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const resetHandler = () => {
-    setName("");
-    setPriceMin(0);
-    setPriceMax(0);
-    setCategory("");
-    setAvRating("");
+    dispatch(listProducts({ order }));
   };
   let categories = [];
   if (products) {
@@ -88,35 +84,50 @@ export default function AllProductsScreen() {
 
     //dispatch(detailsCart());
     //dispatch(detailsWishlist());
+
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, order, successWishlistCreate, successCartCreate]);
-  console.log(productBatch);
-  let prods = [];
-  if (products) {
-    prods = products;
-  }
-  if (products) {
-    productBatch = products;
-  }
-  console.log("prods");
-  console.log(prods);
+  // console.log(productBatch);
+
   const submitHandler = (e) => {
     e.preventDefault();
     // dispatch update user
+
+    setProductBatch([]);
+    onClose();
     dispatch(
       listProducts({ name, category, priceMin, priceMax, avRating, order })
     );
   };
+  useEffect(() => {
+    if (products) {
+      setProductBatch((prevProductBatch) => {
+        return [...prevProductBatch, ...products];
+      });
+    }
+  }, [products]);
+
   const fetchMoreData = () => {
     //dispatch(listProducts({ order }));
-    if (prod.page < prod.totalPages) {
-      dispatch(listProducts({ page: prod.nextPage }));
-      setProductBatch([...productBatch, products]);
+    if (prod.hasNextPage) {
+      dispatch(
+        listProducts({
+          page: prod.nextPage,
+          name,
+          category,
+          priceMin,
+          priceMax,
+          avRating,
+          order,
+        })
+      );
+      //products.concat(products);
+      //setProductBatch([...productBatch, products]);
     } else {
       setHasMore(false);
     }
   };
-
+  console.log(productBatch);
   return (
     <div>
       <Box>
@@ -316,7 +327,7 @@ export default function AllProductsScreen() {
             ></MessageBox>
           )
         )}
-        {productBatch.length > 0 && (
+        {productBatch && productBatch.length > 0 && (
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
               <InfiniteScroll

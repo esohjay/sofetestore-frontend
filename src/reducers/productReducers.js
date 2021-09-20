@@ -46,9 +46,10 @@ export const productListReducer = (
       return {
         loading: false,
         products: action.payload.docs,
-        // prodPage: [...state.products.docs, newProductPage],
+        //prodPage: state.products.concat(action.payload.docs),
         prod: action.payload,
       };
+
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:

@@ -48,6 +48,7 @@ export default function DrawerComponent({ links }) {
                         _hover={{
                           color: "yellow.300",
                         }}
+                        onClick={onClose}
                       >
                         {item.text}
                       </Text>
