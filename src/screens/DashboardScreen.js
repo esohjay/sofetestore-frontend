@@ -42,7 +42,7 @@ export default function OrderScreen(props) {
     dispatch(listOrders({}));
     dispatch(listProducts({}));
     dispatch(allSales({}));
-    dispatch(listUsers());
+    dispatch(listUsers({}));
   }, [dispatch]);
 
   return (
