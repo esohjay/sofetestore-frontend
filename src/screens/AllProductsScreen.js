@@ -6,7 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 //import { detailsCart } from "../actions/cartActions";
-
+import InfiniteScroll from "react-infinite-scroll-component";
 //import { detailsWishlist } from "../actions/wishlistActions";
 import {
   Box,
@@ -38,6 +38,7 @@ import {
   RadioGroup,
   Grid,
   Spacer,
+  Text,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { FaFilter } from "react-icons/fa";
@@ -51,6 +52,7 @@ export default function AllProductsScreen() {
   const [priceMax, setPriceMax] = useState("");
   const [avRating, setAvRating] = useState("");
   const dispatch = useDispatch();
+  const [hasMore, setHasMore] = useState(true);
 
   const cartCreate = useSelector((state) => state.cartCreate);
   const { success: successCartCreate } = cartCreate;
@@ -61,7 +63,8 @@ export default function AllProductsScreen() {
   const wishlistDetails = useSelector((state) => state.wishlistDetails);
   const { items: wishlistItems } = wishlistDetails;
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, prod } = productList;
+  let [productBatch, setProductBatch] = useState(products);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   // const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
@@ -87,13 +90,31 @@ export default function AllProductsScreen() {
     //dispatch(detailsWishlist());
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, order, successWishlistCreate, successCartCreate]);
-
+  console.log(productBatch);
+  let prods = [];
+  if (products) {
+    prods = products;
+  }
+  if (products) {
+    productBatch = products;
+  }
+  console.log("prods");
+  console.log(prods);
   const submitHandler = (e) => {
     e.preventDefault();
     // dispatch update user
     dispatch(
       listProducts({ name, category, priceMin, priceMax, avRating, order })
     );
+  };
+  const fetchMoreData = () => {
+    //dispatch(listProducts({ order }));
+    if (prod.page < prod.totalPages) {
+      dispatch(listProducts({ page: prod.nextPage }));
+      setProductBatch([...productBatch, products]);
+    } else {
+      setHasMore(false);
+    }
   };
 
   return (
@@ -284,33 +305,52 @@ export default function AllProductsScreen() {
             </Box>
           </HStack>
         </Box>
-
         {loading ? (
           <LoadingBox size="sm"></LoadingBox>
-        ) : error ? (
-          <MessageBox
-            status="error"
-            description={error}
-            title="Oops!"
-          ></MessageBox>
         ) : (
+          error && (
+            <MessageBox
+              status="error"
+              description={error}
+              title="Oops!"
+            ></MessageBox>
+          )
+        )}
+        {productBatch.length > 0 && (
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
-              <SimpleGrid
-                minChildWidth={{ base: "220px", md: "220px" }}
-                spacing="30px"
-                justifyItems="center"
+              <InfiniteScroll
+                dataLength={productBatch.length}
+                next={fetchMoreData}
+                hasMore={hasMore}
+                loader={<LoadingBox size="sm" thickness="2px"></LoadingBox>}
+                endMessage={
+                  <Text
+                    color="blue.900"
+                    textAlign="center"
+                    fontWeight="medium"
+                    m="6px"
+                  >
+                    No more products
+                  </Text>
+                }
               >
-                {products.map((product) => (
-                  <Box key={product._id}>
-                    <Product
-                      product={product}
-                      items={items}
-                      wishlistItems={wishlistItems}
-                    ></Product>
-                  </Box>
-                ))}
-              </SimpleGrid>
+                <SimpleGrid
+                  minChildWidth={{ base: "220px", md: "220px" }}
+                  spacing="30px"
+                  justifyItems="center"
+                >
+                  {productBatch.map((product, i) => (
+                    <Box key={product._id}>
+                      <Product
+                        product={product}
+                        items={items}
+                        wishlistItems={wishlistItems}
+                      ></Product>
+                    </Box>
+                  ))}
+                </SimpleGrid>
+              </InfiniteScroll>
             </Box>
           </Center>
         )}

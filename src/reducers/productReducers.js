@@ -46,6 +46,7 @@ export const productListReducer = (
       return {
         loading: false,
         products: action.payload.docs,
+        // prodPage: [...state.products.docs, newProductPage],
         prod: action.payload,
       };
     case PRODUCT_LIST_FAIL:

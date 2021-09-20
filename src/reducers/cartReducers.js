@@ -15,9 +15,9 @@ import {
   CART_DETAILS_REQUEST,
   CART_DETAILS_FAIL,
   CART_DETAILS_SUCCESS,
-  CART_ADD_ITEM,
-  CART_REMOVE_ITEM,
-  CART_EMPTY,
+  //CART_ADD_ITEM,
+  // CART_REMOVE_ITEM,
+  // CART_EMPTY,
   CART_SAVE_SHIPPING_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from "../constants/cartConstants";
@@ -110,7 +110,16 @@ export const cartRemoveReducer = (state = {}, action) => {
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
-    case CART_ADD_ITEM:
+    case CART_CREATE_SUCCESS:
+      return {
+        cartId: action.payload,
+      };
+
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return { ...state, shippingAddress: action.payload };
+    case CART_SAVE_SHIPPING_METHOD:
+      return { ...state, shippingMethod: action.payload };
+    /* case CART_ADD_ITEM:
       const item = action.payload;
       const existItem = state.cartItems.find((x) => x.product === item.product);
       if (existItem) {
@@ -128,12 +137,8 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((x) => x.product !== action.payload),
       };
-    case CART_SAVE_SHIPPING_ADDRESS:
-      return { ...state, shippingAddress: action.payload };
-    case CART_SAVE_SHIPPING_METHOD:
-      return { ...state, shippingMethod: action.payload };
     case CART_EMPTY:
-      return { ...state, cartItems: [] };
+      return { ...state, cartItems: [] };*/
     default:
       return state;
   }
