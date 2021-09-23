@@ -196,15 +196,15 @@ export const createReview =
       dispatch({ type: PRODUCT_REVIEW_CREATE_FAIL, payload: message });
     }
   };
-export const createVariation = (variation) => async (dispatch, getState) => {
+export const createVariation = (variations) => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_VARIATION_REQUEST });
   const {
     userSignin: { userInfo },
   } = getState();
   try {
     const { data } = await Axios.post(
-      `${process.env.REACT_APP_URL}/api/products/${variation._id}/variation`,
-      variation,
+      `${process.env.REACT_APP_URL}/api/products/${variations._id}/variation`,
+      variations,
       {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       }

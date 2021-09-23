@@ -49,22 +49,17 @@ export default function VariationScreen(props) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!product || product._id !== productId || successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
-      dispatch(detailsProduct(productId));
-    } else if (product.variation.length) {
-      //setVariation(product.variation);
-      dispatch(detailsProduct(productId));
-    }
-  }, [dispatch, productId, successCreate, successUpdate, product]);
-  console.log("variation");
-  console.log(product);
+    dispatch({ type: PRODUCT_UPDATE_RESET });
+    dispatch({ type: PRODUCT_VARIATION_RESET });
+    dispatch(detailsProduct(productId));
+  }, [dispatch, productId, successCreate, successUpdate]);
+
   const varVal = {
     varType,
     quantity,
     value,
   };
-  console.log(varVal);
+  //console.log(varVal);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
@@ -164,14 +159,20 @@ export default function VariationScreen(props) {
                 />
               </FormControl>
 
-              <Button colorScheme="teal" size="xs" type="submit">
+              <Button
+                color="yellow.400"
+                bg="blue.900"
+                size="xs"
+                my="5px"
+                type="submit"
+              >
                 Save
               </Button>
             </Box>
           </form>
           {product && product.variation.length > 0 ? (
-            product.variation.map((f) => (
-              <Box m="1rem" shadow="lg" p="1rem">
+            product.variation.map((f, i) => (
+              <Box m="1rem" shadow="lg" p="1rem" key={`${f.value}${i}`}>
                 <Text>{f.varType}</Text>
                 <Text>{f.value}</Text>
                 <HStack>
