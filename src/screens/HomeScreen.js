@@ -104,8 +104,8 @@ export default function HomeScreen() {
         <Center>
           <Box m="10px" w="90%" alignItems="center" justifyItems="center">
             <SimpleGrid
-              minChildWidth={{ base: "150px", md: "220px" }}
-              spacing={{ base: "20px", md: "30px" }}
+              minChildWidth={{ base: "180px", md: "220px" }}
+              spacing={{ base: "15px", md: "30px" }}
               justifyItems="center"
             >
               {trending.map((product) => (
@@ -243,8 +243,8 @@ export default function HomeScreen() {
         <Center>
           <Box m="10px" w="90%" alignItems="center" justifyItems="center">
             <SimpleGrid
-              minChildWidth={{ base: "150px", md: "220px" }}
-              spacing={{ base: "20px", md: "30px" }}
+              minChildWidth={{ base: "180px", md: "220px" }}
+              spacing={{ base: "15px", md: "30px" }}
               justifyItems="center"
             >
               {featured.map((product) => (
