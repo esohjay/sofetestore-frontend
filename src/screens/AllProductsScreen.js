@@ -453,8 +453,8 @@ export default function AllProductsScreen() {
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
               <SimpleGrid
-                minChildWidth={{ base: "150px", md: "220px" }}
-                spacing={{ base: "20px", md: "30px" }}
+                minChildWidth={{ base: "180px", md: "220px" }}
+                spacing={{ base: "15px", md: "30px" }}
                 justifyItems="center"
               >
                 {products.map((product, i) => (
@@ -475,12 +475,21 @@ export default function AllProductsScreen() {
             {prod.hasPrevPage && (
               <IconButton
                 size="xs"
+                color="yellow.400"
+                bg="blue.900"
+                mx="2px"
                 onClick={handlePrevbtn}
                 icon={<ChevronLeftIcon />}
               />
             )}
             {minPageNumberLimit >= 1 && (
-              <Button size="xs" onClick={pageDecrementBtn}>
+              <Button
+                size="xs"
+                color="yellow.400"
+                bg="blue.900"
+                mx="2px"
+                onClick={pageDecrementBtn}
+              >
                 ...
               </Button>
             )}
@@ -488,7 +497,13 @@ export default function AllProductsScreen() {
             {renderPageNumbers}
 
             {pages.length > maxPageNumberLimit && (
-              <Button size="xs" onClick={pageIncrementBtn}>
+              <Button
+                size="xs"
+                color="yellow.400"
+                bg="blue.900"
+                mx="2px"
+                onClick={pageIncrementBtn}
+              >
                 ...
               </Button>
             )}
@@ -496,6 +511,9 @@ export default function AllProductsScreen() {
             {prod.hasNextPage && (
               <IconButton
                 size="xs"
+                color="yellow.400"
+                bg="blue.900"
+                mx="2px"
                 onClick={handleNextbtn}
                 icon={<ChevronRightIcon />}
               />
