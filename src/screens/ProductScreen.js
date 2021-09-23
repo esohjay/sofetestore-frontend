@@ -110,7 +110,7 @@ export default function ProductScreen(props) {
   const addHandler = () => {
     // props.history.push(`/products/${productId}/cart`);
     if (size) {
-      dispatch(createCart(productId, { size }));
+      dispatch(createCart(product._id, { size, cartId: cartId.idCart }));
       //dispatch(detailsCart());
     } else {
       toast({
@@ -124,7 +124,9 @@ export default function ProductScreen(props) {
   };
   const wishlistHandler = () => {
     if (size) {
-      dispatch(createWishlist(productId, { size }));
+      dispatch(
+        createWishlist(product._id, { size, wishlistId: wishlistId.idWishlist })
+      );
       //dispatch(detailsWishlist());
     } else {
       <MessageBox
@@ -394,7 +396,7 @@ export default function ProductScreen(props) {
                               </RadioGroup>
                             </Box>
 
-                            <FormControl id="review" isRequired w="50%">
+                            <FormControl id="review" isRequired>
                               <FormLabel>Comment</FormLabel>
                               <Textarea
                                 value={comment}
@@ -405,7 +407,12 @@ export default function ProductScreen(props) {
                             <div>
                               <Button
                                 isLoading={loadingReviewCreate}
-                                color="blue.900"
+                                color="yellow.400"
+                                backgroundColor="blue.900"
+                                _hover={{
+                                  color: "blue.900",
+                                  backgroundColor: "yellow.400",
+                                }}
                                 type="submit"
                               >
                                 Review
@@ -414,17 +421,23 @@ export default function ProductScreen(props) {
                           </Stack>
                           <div>
                             {errorReviewCreate && (
-                              <MessageBox variant="danger">
-                                {errorReviewCreate}
-                              </MessageBox>
+                              <MessageBox
+                                status="error"
+                                description={errorReviewCreate}
+                                title="Oops!"
+                                reset={PRODUCT_REVIEW_CREATE_RESET}
+                              ></MessageBox>
                             )}
                           </div>
                         </form>
                       ) : (
-                        <MessageBox>
-                          Please <Link to="/signin">Sign In</Link> to write a
-                          review
-                        </MessageBox>
+                        <Text textAlign="center" color="color.900">
+                          Please{" "}
+                          <Link to="/signin" style={{ color: "blue" }}>
+                            Sign In
+                          </Link>{" "}
+                          to write a review
+                        </Text>
                       )}
                     </Box>
                   </Stack>

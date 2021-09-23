@@ -10,43 +10,49 @@ export default function Product(props) {
   return (
     <div key={product._id}>
       <Box
-        w={{ base: "220px", sm: "220px" }}
-        h={{ base: "380px", sm: "400px" }}
+        w={{ base: "150px", sm: "220px" }}
+        h={{ base: "300px", sm: "400px" }}
         bg="white"
         align="center"
         shadow="md"
       >
-        {product.images.length && (
-          <>
-            <Link to={`/product/${product._id}`}>
-              <Box w="100%" h="65%">
-                <Image
-                  src={product.images[0].url}
-                  alt={product.name}
-                  objectFit="cover"
-                  objectPosition="center center"
-                  boxSize="full"
-                />
-              </Box>
-            </Link>
-            <Center mt="-10" mr="80%">
-              <WishlistButton product={product} wishlistItems={wishlistItems} />
-            </Center>
-            <Box p="10px">
-              <Text textAlign="center" color="blue.900">
-                <Link to={`/product/${product._id}`}>{product.name}</Link>
-              </Text>
-              <Text textAlign="center" color="green.500" fontWeight="medium">
-                ₦{product.price}
-              </Text>
-              <Center>
-                <HStack mt="10px">
-                  <CartButton product={product} items={items} />
-                </HStack>
-              </Center>
+        <>
+          <Link to={`/product/${product._id}`}>
+            <Box w="100%" h={{ base: "60%", md: "65%" }}>
+              <Image
+                src={
+                  product.images.length > 0
+                    ? product.images[0].url
+                    : "/images/sofetelogo.jpg"
+                }
+                alt={product.name}
+                objectFit="cover"
+                objectPosition="center center"
+                boxSize="full"
+              />
             </Box>
-          </>
-        )}
+          </Link>
+          <Center mt="-10" mr="70%">
+            <WishlistButton product={product} wishlistItems={wishlistItems} />
+          </Center>
+          <Box p="10px">
+            <Text
+              textAlign="center"
+              color="blue.900"
+              fontSize={{ base: "sm", md: "md" }}
+            >
+              <Link to={`/product/${product._id}`}>{product.name}</Link>
+            </Text>
+            <Text textAlign="center" color="green.500" fontWeight="medium">
+              ₦{product.price}
+            </Text>
+            <Center>
+              <HStack mt="10px">
+                <CartButton product={product} items={items} />
+              </HStack>
+            </Center>
+          </Box>
+        </>
       </Box>
     </div>
   );

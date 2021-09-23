@@ -33,6 +33,8 @@ const {
   PRODUCT_VARIATION_UPDATE_SUCCESS,
   PRODUCT_VARIATION_UPDATE_FAIL,
   PRODUCT_VARIATION_RESET,
+  PRODUCT_CREATE_RESET,
+  PRODUCT_LIST_RESET,
 } = require("../constants/productConstants");
 
 export const productListReducer = (
@@ -49,7 +51,8 @@ export const productListReducer = (
         //prodPage: state.products.concat(action.payload.docs),
         prod: action.payload,
       };
-
+    case PRODUCT_LIST_RESET:
+      return { loading: false, products: [] };
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -94,6 +97,8 @@ export const productCreateReducer = (state = {}, action) => {
       return { loading: true };
     case PRODUCT_CREATE_SUCCESS:
       return { loading: false, product: action.payload, success: true };
+    case PRODUCT_CREATE_RESET:
+      return {};
     case PRODUCT_CREATE_FAIL:
       return { loading: false, error: action.payload };
     default:

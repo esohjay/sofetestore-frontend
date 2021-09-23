@@ -30,6 +30,8 @@ import {
   Center,
   Square,
 } from "@chakra-ui/react";
+import { CART_CREATE_RESET } from "../constants/cartConstants";
+import { WISHLIST_CREATE_RESET } from "../constants/wishlistConstants";
 import { FaRegThumbsUp, FaRegCreditCard, FaTruck } from "react-icons/fa";
 import { SUBSCRIPTION_RESET } from "../constants/userConstants";
 export default function HomeScreen() {
@@ -69,6 +71,8 @@ export default function HomeScreen() {
     dispatch(listProducts({}));
     //dispatch(detailsCart());
     //dispatch(detailsWishlist());
+    dispatch({ type: WISHLIST_CREATE_RESET });
+    dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, successWishlistCreate, successCartCreate]);
   const submitHandler = () => {
     dispatch(subscribe({ email }));
@@ -97,23 +101,25 @@ export default function HomeScreen() {
           title="Oops!"
         ></MessageBox>
       ) : (
-        <Box m="10px" w="90%" alignItems="center" justifyItems="center">
-          <SimpleGrid
-            minChildWidth="220px"
-            spacing="30px"
-            justifyItems="center"
-          >
-            {trending.map((product) => (
-              <Box key={product._id}>
-                <Product
-                  product={product}
-                  items={items}
-                  wishlistItems={wishlistItems}
-                ></Product>
-              </Box>
-            ))}
-          </SimpleGrid>
-        </Box>
+        <Center>
+          <Box m="10px" w="90%" alignItems="center" justifyItems="center">
+            <SimpleGrid
+              minChildWidth={{ base: "150px", md: "220px" }}
+              spacing={{ base: "20px", md: "30px" }}
+              justifyItems="center"
+            >
+              {trending.map((product) => (
+                <Box key={product._id}>
+                  <Product
+                    product={product}
+                    items={items}
+                    wishlistItems={wishlistItems}
+                  ></Product>
+                </Box>
+              ))}
+            </SimpleGrid>
+          </Box>
+        </Center>
       )}
       <Box my="65px">
         <Center>
@@ -237,8 +243,8 @@ export default function HomeScreen() {
         <Center>
           <Box m="10px" w="90%" alignItems="center" justifyItems="center">
             <SimpleGrid
-              minChildWidth="180px"
-              spacing="30px"
+              minChildWidth={{ base: "150px", md: "220px" }}
+              spacing={{ base: "20px", md: "30px" }}
               justifyItems="center"
             >
               {featured.map((product) => (
@@ -256,58 +262,60 @@ export default function HomeScreen() {
           </Box>
         </Center>
       )}
-      <Center my="65px">
-        <SimpleGrid columns={[1, null, 3]} spacing="40px">
-          <Flex bg="gray.100" shadow="lg">
-            <Square size="150px">
-              <Icon color="blue.900" as={FaTruck} w="40px" h="40px" />
-            </Square>
-            <Center w="200px">
-              <VStack px="10px">
-                <Heading size="sm" color="blue.900">
-                  Speedy Delivery
-                </Heading>
-                <Text fontSize="sm" color="blue.900" textAlign="center">
-                  We deliver with great speed. Our delivery speed can not be
-                  matched.
-                </Text>
-              </VStack>
-            </Center>
-          </Flex>
-          <Flex bg="gray.100" shadow="lg">
-            <Square size="150px">
-              <Icon color="blue.900" as={FaRegCreditCard} w="40px" h="40px" />
-            </Square>
-            <Center w="200px">
-              <VStack px="10px">
-                <Heading size="sm" color="blue.900">
-                  Secure Payment
-                </Heading>
-                <Text fontSize="sm" color="blue.900" textAlign="center">
-                  All payments on Sofete Store are secured with PayStack payment
-                  gateway.
-                </Text>
-              </VStack>
-            </Center>
-          </Flex>
-          <Flex bg="gray.100" shadow="lg">
-            <Square size="150px">
-              <Icon color="blue.900" as={FaRegThumbsUp} w="40px" h="40px" />
-            </Square>
-            <Center w="200px">
-              <VStack px="10px">
-                <Heading size="sm" color="blue.900">
-                  Quality Products
-                </Heading>
-                <Text fontSize="sm" color="blue.900" textAlign="center">
-                  We sell quality products only. Your satisfaction is
-                  guaranteed.
-                </Text>
-              </VStack>
-            </Center>
-          </Flex>
-        </SimpleGrid>
-      </Center>
+      <Box mx="10px">
+        <Center my="65px">
+          <SimpleGrid columns={[1, null, 3]} spacing="40px">
+            <Flex bg="gray.100" shadow="lg">
+              <Square size="150px">
+                <Icon color="blue.900" as={FaTruck} w="40px" h="40px" />
+              </Square>
+              <Center w="200px">
+                <VStack px="10px">
+                  <Heading size="sm" color="blue.900">
+                    Speedy Delivery
+                  </Heading>
+                  <Text fontSize="sm" color="blue.900" textAlign="center">
+                    We deliver with great speed. Our delivery speed can not be
+                    matched.
+                  </Text>
+                </VStack>
+              </Center>
+            </Flex>
+            <Flex bg="gray.100" shadow="lg">
+              <Square size="150px">
+                <Icon color="blue.900" as={FaRegCreditCard} w="40px" h="40px" />
+              </Square>
+              <Center w="200px">
+                <VStack px="10px">
+                  <Heading size="sm" color="blue.900">
+                    Secure Payment
+                  </Heading>
+                  <Text fontSize="sm" color="blue.900" textAlign="center">
+                    All payments on Sofete Store are secured with PayStack
+                    payment gateway.
+                  </Text>
+                </VStack>
+              </Center>
+            </Flex>
+            <Flex bg="gray.100" shadow="lg">
+              <Square size="150px">
+                <Icon color="blue.900" as={FaRegThumbsUp} w="40px" h="40px" />
+              </Square>
+              <Center w="200px">
+                <VStack px="10px">
+                  <Heading size="sm" color="blue.900">
+                    Quality Products
+                  </Heading>
+                  <Text fontSize="sm" color="blue.900" textAlign="center">
+                    We sell quality products only. Your satisfaction is
+                    guaranteed.
+                  </Text>
+                </VStack>
+              </Center>
+            </Flex>
+          </SimpleGrid>
+        </Center>
+      </Box>
       <Box>
         {subscribeError && (
           <MessageBox

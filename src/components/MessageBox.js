@@ -16,7 +16,7 @@ export default function MessageBox({ title, description, status, reset = {} }) {
     const disappear = setTimeout(() => {
       setActive(false);
 
-      dispatch({ type: reset });
+      // dispatch({ type: reset });
     }, 3000);
     return () => {
       clearTimeout(disappear);

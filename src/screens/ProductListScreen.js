@@ -73,7 +73,12 @@ export default function ProductListScreen(props) {
       >
         Products
       </Text>
-      <Box align="center">
+      {products && products.length > 0 && (
+        <Text textAlign="center" m="1rem" color="blue.900">
+          ( {products.length} products)
+        </Text>
+      )}
+      <Box align="center" my="5px">
         <HStack w="65%">
           <FormControl id="name" isRequired>
             <Input

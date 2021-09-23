@@ -40,6 +40,7 @@ export default function WishlistButton(props) {
       dispatch(
         createWishlist(product._id, { size, wishlistId: wishlistId.idWishlist })
       );
+      onClose();
       //dispatch(detailsWishlist());
     } else {
       alert("Please select Size");

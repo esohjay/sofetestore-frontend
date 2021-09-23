@@ -6,7 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 //import { detailsCart } from "../actions/cartActions";
-import InfiniteScroll from "react-infinite-scroll-component";
+//import InfiniteScroll from "react-infinite-scroll-component";
 //import { detailsWishlist } from "../actions/wishlistActions";
 import {
   Box,
@@ -38,11 +38,13 @@ import {
   RadioGroup,
   Grid,
   Spacer,
-  Text,
+  IconButton,
 } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
+import { StarIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { FaFilter } from "react-icons/fa";
 import { CART_CREATE_RESET } from "../constants/cartConstants";
+import { WISHLIST_CREATE_RESET } from "../constants/wishlistConstants";
+
 export default function AllProductsScreen() {
   const [name, setName] = useState("");
 
@@ -52,7 +54,10 @@ export default function AllProductsScreen() {
   const [priceMax, setPriceMax] = useState("");
   const [avRating, setAvRating] = useState("");
   const dispatch = useDispatch();
-  const [hasMore, setHasMore] = useState(true);
+  // const [hasMore, setHasMore] = useState(true);
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
   const cartCreate = useSelector((state) => state.cartCreate);
   const { success: successCartCreate } = cartCreate;
@@ -64,9 +69,10 @@ export default function AllProductsScreen() {
   const { items: wishlistItems } = wishlistDetails;
   const productList = useSelector((state) => state.productList);
   const { loading, error, products, prod } = productList;
-  const [productBatch, setProductBatch] = useState([]);
+  //const [productBatch, setProductBatch] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
+
   // const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const resetHandler = () => {
     dispatch(listProducts({ order }));
@@ -85,28 +91,144 @@ export default function AllProductsScreen() {
     //dispatch(detailsCart());
     //dispatch(detailsWishlist());
 
+    dispatch({ type: WISHLIST_CREATE_RESET });
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, order, successWishlistCreate, successCartCreate]);
-  // console.log(productBatch);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // dispatch update user
-
-    setProductBatch([]);
     onClose();
     dispatch(
       listProducts({ name, category, priceMin, priceMax, avRating, order })
     );
   };
-  useEffect(() => {
-    if (products) {
-      setProductBatch((prevProductBatch) => {
-        return [...prevProductBatch, ...products];
-      });
+  const pageHandler = (page) => {
+    dispatch(
+      listProducts({
+        page,
+        name,
+        category,
+        priceMin,
+        priceMax,
+        avRating,
+        order,
+      })
+    );
+  };
+  const pages = [];
+  if (prod) {
+    for (let i = 1; i <= prod.totalPages; i++) {
+      pages.push(i);
     }
-  }, [products]);
+  }
+  const renderPageNumbers = pages.map((number) => {
+    if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+      return (
+        <HStack key={number}>
+          <Button
+            size="xs"
+            onClick={() => pageHandler(number)}
+            border={number === prod.page ? "solid" : ""}
+            borderColor="blue.900"
+            color={number === prod.page ? "blue.900" : "yellow.400"}
+            bg={number === prod.page ? "yellow.400" : "blue.900"}
+            mx="2px"
+            borderWidth="thin"
+          >
+            {number}
+          </Button>
+        </HStack>
+      );
+    } else {
+      return null;
+    }
+  });
+  const handleNextbtn = () => {
+    dispatch(
+      listProducts({
+        page: prod.page + 1,
+        name,
+        category,
+        priceMin,
+        priceMax,
+        avRating,
+        order,
+      })
+    );
 
+    if (prod.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(
+      listProducts({
+        page: prod.page - 1,
+        name,
+        category,
+        priceMin,
+        priceMax,
+        avRating,
+        order,
+      })
+    );
+
+    if ((prod.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
+  const pageIncrementBtn = () => {
+    setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+  };
+
+  const pageDecrementBtn = () => {
+    setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+    setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+  };
+
+  /*
+  const lastPage = (page) => {
+    dispatch(
+      listProducts({
+        page,
+        name,
+        category,
+        priceMin,
+        priceMax,
+        avRating,
+        order,
+      })
+    );
+    if (prod.page === prod.totalPages) {
+      setMaxPageNumberLimit(prod.totalPages);
+      setMinPageNumberLimit(prod.totalPages - pageNumberLimit);
+    }
+    console.log(maxPageNumberLimit);
+    console.log(minPageNumberLimit);
+  };useEffect(() => {
+    if (products && !successCartCreate && !successWishlistCreate) {
+      setProductBatch(
+        (prevProductBatch) => {
+          const uniq = products.filter((product)=>{
+            product._id ==
+          })
+          return [...prevProductBatch, ...products];
+        },
+        console.log("first"),
+        console.log(productBatch)
+      );
+    } else if (successCartCreate || successWishlistCreate) {
+      setProductBatch(productBatch);
+      console.log("second");
+
+      console.log(productBatch);
+    }
+  }, [products, successCartCreate, successWishlistCreate]);
+  console.log("outside");
+  console.log(productBatch);
   const fetchMoreData = () => {
     //dispatch(listProducts({ order }));
     if (prod.hasNextPage) {
@@ -126,8 +248,8 @@ export default function AllProductsScreen() {
     } else {
       setHasMore(false);
     }
-  };
-  console.log(productBatch);
+  };*/
+
   return (
     <div>
       <Box>
@@ -327,10 +449,86 @@ export default function AllProductsScreen() {
             ></MessageBox>
           )
         )}
-        {productBatch && productBatch.length > 0 && (
+        {products && products.length > 0 && (
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
-              <InfiniteScroll
+              <SimpleGrid
+                minChildWidth={{ base: "150px", md: "220px" }}
+                spacing={{ base: "20px", md: "30px" }}
+                justifyItems="center"
+              >
+                {products.map((product, i) => (
+                  <Box key={`${product._id}${i}`}>
+                    <Product
+                      product={product}
+                      items={items}
+                      wishlistItems={wishlistItems}
+                    ></Product>
+                  </Box>
+                ))}
+              </SimpleGrid>
+            </Box>
+          </Center>
+        )}
+        {prod && prod.totalPages > 1 && (
+          <Center>
+            {prod.hasPrevPage && (
+              <IconButton
+                size="xs"
+                onClick={handlePrevbtn}
+                icon={<ChevronLeftIcon />}
+              />
+            )}
+            {minPageNumberLimit >= 1 && (
+              <Button size="xs" onClick={pageDecrementBtn}>
+                ...
+              </Button>
+            )}
+
+            {renderPageNumbers}
+
+            {pages.length > maxPageNumberLimit && (
+              <Button size="xs" onClick={pageIncrementBtn}>
+                ...
+              </Button>
+            )}
+
+            {prod.hasNextPage && (
+              <IconButton
+                size="xs"
+                onClick={handleNextbtn}
+                icon={<ChevronRightIcon />}
+              />
+            )}
+          </Center>
+        )}
+      </Box>
+    </div>
+  );
+}
+/* 
+{prod.hasPrevPage && (
+              <Button size="xs" onClick={() => pageHandler(prod.page - 1)}>
+                Prev
+              </Button>
+            )}
+ {Array(prod.totalPages)
+              .fill("")
+              .map((pageNum, i) => (
+                <HStack key={i}>
+                  <Button size="xs" onClick={() => pageHandler(i + 1)}>
+                    {i + 1}
+                  </Button>
+                </HStack>
+              ))}
+            {prod.hasNextPage && (
+              <Button size="xs" onClick={() => pageHandler(prod.page + 1)}>
+                Next
+              </Button>
+            )}
+
+
+<InfiniteScroll
                 dataLength={productBatch.length}
                 next={fetchMoreData}
                 hasMore={hasMore}
@@ -345,33 +543,7 @@ export default function AllProductsScreen() {
                     No more products
                   </Text>
                 }
-              >
-                <SimpleGrid
-                  minChildWidth={{ base: "220px", md: "220px" }}
-                  spacing="30px"
-                  justifyItems="center"
-                >
-                  {productBatch.map((product, i) => (
-                    <Box key={product._id}>
-                      <Product
-                        product={product}
-                        items={items}
-                        wishlistItems={wishlistItems}
-                      ></Product>
-                    </Box>
-                  ))}
-                </SimpleGrid>
-              </InfiniteScroll>
-            </Box>
-          </Center>
-        )}
-      </Box>
-    </div>
-  );
-}
-/* 
-
-
+              > </InfiniteScroll>
 
  
 

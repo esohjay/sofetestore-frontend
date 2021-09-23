@@ -15,18 +15,19 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-
+import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 export default function CreateProductScreen(props) {
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin;
   const productCreate = useSelector((state) => state.productCreate);
   const { loading, success, error, product } = productCreate;
-
+  const dispatch = useDispatch();
   if (!userInfo) {
     props.history.push("/signin");
   }
   if (success && product) {
     props.history.push(`/manageimage/${product._id}`);
+    dispatch({ type: PRODUCT_CREATE_RESET });
   }
   const [name, setName] = useState("");
 
@@ -37,8 +38,6 @@ export default function CreateProductScreen(props) {
   const [sku, setSku] = useState("");
   const [origin, setOrigin] = useState("");
   const [description, setDescription] = useState("");
-
-  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();

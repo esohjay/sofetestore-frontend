@@ -13,6 +13,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Text,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { CART_CREATE_RESET } from "../constants/cartConstants";
 import MessageBox from "../components/MessageBox";
@@ -20,7 +21,7 @@ import { FaShoppingBasket } from "react-icons/fa";
 export default function CartButton(props) {
   const { product, items } = props;
   const [isOpen, setIsOpen] = React.useState(false);
-
+  const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const onClose = () => setIsOpen(false);
   const cancelRef = React.useRef();
 
@@ -40,6 +41,7 @@ export default function CartButton(props) {
   const addHandler = () => {
     if (size) {
       dispatch(createCart(product._id, { size, cartId: cartId.idCart }));
+      onClose();
       //dispatch(detailsCart());
     } else {
       alert("Please select Size");
@@ -64,7 +66,8 @@ export default function CartButton(props) {
           color: "blue.900",
           backgroundColor: "yellow.400",
         }}
-        size="sm"
+        shadow="lg"
+        size={isLargerThan676 ? "sm" : "xs"}
         onClick={() => setIsOpen(true)}
       >
         {product.countInStock <= 0
