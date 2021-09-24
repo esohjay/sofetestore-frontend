@@ -104,7 +104,7 @@ export default function HomeScreen() {
         <Center>
           <Box m="10px" w="90%" alignItems="center" justifyItems="center">
             <SimpleGrid
-              minChildWidth={{ base: "180px", md: "220px" }}
+              minChildWidth={{ base: "170px", md: "220px" }}
               spacing={{ base: "15px", md: "30px" }}
               justifyItems="center"
             >
@@ -243,7 +243,7 @@ export default function HomeScreen() {
         <Center>
           <Box m="10px" w="90%" alignItems="center" justifyItems="center">
             <SimpleGrid
-              minChildWidth={{ base: "180px", md: "220px" }}
+              minChildWidth={{ base: "170px", md: "220px" }}
               spacing={{ base: "15px", md: "30px" }}
               justifyItems="center"
             >

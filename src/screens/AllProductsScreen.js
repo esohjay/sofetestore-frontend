@@ -39,6 +39,7 @@ import {
   Grid,
   Spacer,
   IconButton,
+  // useMediaQuery,
 } from "@chakra-ui/react";
 import { StarIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { FaFilter } from "react-icons/fa";
@@ -46,6 +47,7 @@ import { CART_CREATE_RESET } from "../constants/cartConstants";
 import { WISHLIST_CREATE_RESET } from "../constants/wishlistConstants";
 
 export default function AllProductsScreen() {
+  //  const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const [name, setName] = useState("");
 
   const [category, setCategory] = useState("");
@@ -453,7 +455,7 @@ export default function AllProductsScreen() {
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
               <SimpleGrid
-                minChildWidth={{ base: "180px", md: "220px" }}
+                minChildWidth={{ base: "170px", md: "220px" }}
                 spacing={{ base: "15px", md: "30px" }}
                 justifyItems="center"
               >

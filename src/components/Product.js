@@ -10,8 +10,8 @@ export default function Product(props) {
   return (
     <div key={product._id}>
       <Box
-        w={{ base: "180px", sm: "220px" }}
-        h={{ base: "300px", sm: "400px" }}
+        w={{ base: "170px", sm: "220px" }}
+        h={{ base: "280px", sm: "400px" }}
         bg="white"
         align="center"
         shadow="md"
