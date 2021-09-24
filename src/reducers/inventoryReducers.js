@@ -78,7 +78,8 @@ export const inventoryListReducer = (
       return {
         loading: false,
         success: true,
-        inventory: action.payload,
+        inventory: action.payload.docs,
+        inventoryDetails: action.payload,
       };
     case INVENTORY_LIST_FAIL:
       return { loading: false, error: action.payload };

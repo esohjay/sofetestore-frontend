@@ -74,7 +74,8 @@ export const salesListReducer = (
       return {
         loading: false,
         success: true,
-        sales: action.payload,
+        sales: action.payload.docs,
+        sale: action.payload,
       };
     case SALES_LIST_FAIL:
       return { loading: false, error: action.payload };

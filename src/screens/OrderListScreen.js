@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteOrder, listOrders } from "../actions/orderActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { ORDER_DELETE_RESET } from "../constants/orderConstants";
+import Pagination from "../components/Pagination";
 import {
   Stack,
   HStack,
@@ -19,8 +20,11 @@ import { Link } from "react-router-dom";
 
 import Alert from "../components/Alert";
 export default function OrderListScreen(props) {
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   const orderList = useSelector((state) => state.orderList);
-  const { loading, error, orders } = orderList;
+  const { loading, error, orders, order } = orderList;
   const orderDelete = useSelector((state) => state.orderDelete);
   const {
     loading: loadingDelete,
@@ -34,6 +38,26 @@ export default function OrderListScreen(props) {
   }, [dispatch, successDelete]);
   const deleteHandler = (order) => {
     dispatch(deleteOrder(order._id));
+  };
+  const pageHandler = (page) => {
+    dispatch(listOrders(page));
+  };
+
+  const handleNextbtn = () => {
+    dispatch(listOrders(order.page + 1));
+
+    if (order.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(listOrders(order.page - 1));
+
+    if ((order.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
   };
   return (
     <Box m="16px" p="1rem">
@@ -56,7 +80,7 @@ export default function OrderListScreen(props) {
       </Text>
       {orders && orders.length > 0 && (
         <Text textAlign="center" m="1rem" color="blue.900">
-          ( {orders.length} orders)
+          ( {order.totalDocs} orders)
         </Text>
       )}
       {loadingDelete && <LoadingBox size="md"></LoadingBox>}
@@ -217,6 +241,12 @@ export default function OrderListScreen(props) {
               )}
             </div>
           ))}
+          <Pagination
+            pageInfo={order}
+            pageHandler={pageHandler}
+            handleNextbtn={handleNextbtn}
+            handlePrevbtn={handlePrevbtn}
+          />
         </Box>
       )}
     </Box>

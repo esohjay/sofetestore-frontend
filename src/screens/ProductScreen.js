@@ -217,27 +217,34 @@ export default function ProductScreen(props) {
                       : "/images/sofetelogo.jpg"
                   }
                   alt={product.name}
+                  transition="all"
+                  transitionDuration="1s"
+                  transitionDelay="1s"
                   objectPosition="center center"
                 />
-                <HStack>
-                  {product.images.map((img, i) => (
-                    <div key={img.url}>
-                      <Box h="40px" w="40px" m="1rem">
-                        <Image
-                          boxSize="full"
-                          objectFit="cover"
-                          src={img.url}
-                          alt={product.name}
-                          objectPosition="center center"
-                          onClick={(e) => setIndex(i)}
-                          cursor="pointer"
-                          border="solid"
-                          borderColor={i === index ? "blue.900" : "yellow.400"}
-                        />
-                      </Box>
-                    </div>
-                  ))}
-                </HStack>
+                <Center>
+                  <HStack w="80%">
+                    {product.images.map((img, i) => (
+                      <div key={img.url}>
+                        <Box h="40px" w="40px" m="1rem">
+                          <Image
+                            boxSize="full"
+                            objectFit="cover"
+                            src={img.url}
+                            alt={product.name}
+                            objectPosition="center center"
+                            onClick={(e) => setIndex(i)}
+                            cursor="pointer"
+                            border="solid"
+                            borderColor={
+                              i === index ? "blue.900" : "yellow.400"
+                            }
+                          />
+                        </Box>
+                      </div>
+                    ))}
+                  </HStack>
+                </Center>
               </Box>
             </WrapItem>
             <WrapItem w={{ base: "100%", sm: "80%", lg: "40%" }}>

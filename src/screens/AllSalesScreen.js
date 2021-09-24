@@ -186,6 +186,8 @@ export default function AllSalesScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(allSales({}));
+    dispatch({ type: SALES_UPDATE_RESET });
+    dispatch({ type: SALES_DELETE_RESET });
   }, [dispatch, salesUpdateSuccess, salesDeleteSuccess]);
   const deleteSalesHandler = (id) => {
     dispatch(deleteSales(id));

@@ -188,6 +188,8 @@ export default function InventoryListScreen(props) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(allInventory({}));
+    dispatch({ type: INVENTORY_DELETE_RESET });
+    dispatch({ type: INVENTORY_UPDATE_RESET });
   }, [dispatch, successDelete, success]);
   const deleteHandler = (id) => {
     dispatch(deleteInventory(id));

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Product from "../components/Product";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import Pagination from "../components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
 //import { detailsCart } from "../actions/cartActions";
@@ -38,10 +39,10 @@ import {
   RadioGroup,
   Grid,
   Spacer,
-  IconButton,
+
   // useMediaQuery,
 } from "@chakra-ui/react";
-import { StarIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { StarIcon } from "@chakra-ui/icons";
 import { FaFilter } from "react-icons/fa";
 import { CART_CREATE_RESET } from "../constants/cartConstants";
 import { WISHLIST_CREATE_RESET } from "../constants/wishlistConstants";
@@ -117,7 +118,7 @@ export default function AllProductsScreen() {
       })
     );
   };
-  const pages = [];
+  /* const pages = [];
   if (prod) {
     for (let i = 1; i <= prod.totalPages; i++) {
       pages.push(i);
@@ -144,7 +145,7 @@ export default function AllProductsScreen() {
     } else {
       return null;
     }
-  });
+  });*/
   const handleNextbtn = () => {
     dispatch(
       listProducts({
@@ -181,7 +182,7 @@ export default function AllProductsScreen() {
       setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
   };
-  const pageIncrementBtn = () => {
+  /* const pageIncrementBtn = () => {
     setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
   };
@@ -189,7 +190,7 @@ export default function AllProductsScreen() {
   const pageDecrementBtn = () => {
     setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
     setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
-  };
+  };*/
 
   /*
   const lastPage = (page) => {
@@ -472,56 +473,12 @@ export default function AllProductsScreen() {
             </Box>
           </Center>
         )}
-        {prod && prod.totalPages > 1 && (
-          <Center>
-            {prod.hasPrevPage && (
-              <IconButton
-                size="xs"
-                color="yellow.400"
-                bg="blue.900"
-                mx="2px"
-                onClick={handlePrevbtn}
-                icon={<ChevronLeftIcon />}
-              />
-            )}
-            {minPageNumberLimit >= 1 && (
-              <Button
-                size="xs"
-                color="yellow.400"
-                bg="blue.900"
-                mx="2px"
-                onClick={pageDecrementBtn}
-              >
-                ...
-              </Button>
-            )}
-
-            {renderPageNumbers}
-
-            {pages.length > maxPageNumberLimit && (
-              <Button
-                size="xs"
-                color="yellow.400"
-                bg="blue.900"
-                mx="2px"
-                onClick={pageIncrementBtn}
-              >
-                ...
-              </Button>
-            )}
-
-            {prod.hasNextPage && (
-              <IconButton
-                size="xs"
-                color="yellow.400"
-                bg="blue.900"
-                mx="2px"
-                onClick={handleNextbtn}
-                icon={<ChevronRightIcon />}
-              />
-            )}
-          </Center>
-        )}
+        <Pagination
+          pageInfo={prod}
+          pageHandler={pageHandler}
+          handleNextbtn={handleNextbtn}
+          handlePrevbtn={handlePrevbtn}
+        />
       </Box>
     </div>
   );

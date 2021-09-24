@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { enquiry } from "../actions/userActions";
@@ -28,7 +28,9 @@ export default function SigninScreen(props) {
   const enquiryState = useSelector((state) => state.enquiry);
   const { success, error } = enquiryState;
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    dispatch({ type: ENQUIRY_RESET });
+  }, [dispatch]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(enquiry({ email, phone, name, message }));

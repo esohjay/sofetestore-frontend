@@ -94,7 +94,7 @@ export default function VariationScreen(props) {
       ) : (
         <>
           <form onSubmit={submitHandler}>
-            <div>
+            <Box m="5px">
               {loadingUpdate && <LoadingBox></LoadingBox>}
               {errorUpdate && (
                 <MessageBox
@@ -121,7 +121,7 @@ export default function VariationScreen(props) {
                   reset={PRODUCT_VARIATION_RESET}
                 ></MessageBox>
               )}
-            </div>
+            </Box>
 
             <Box m="rem" shadow="lg" p="1rem">
               <FormControl id="type">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { bulkMailAction } from "../actions/userActions";
@@ -27,7 +27,9 @@ export default function BulkMailScreen(props) {
   const bulkMail = useSelector((state) => state.bulkMail);
   const { success, error } = bulkMail;
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    dispatch({ type: ENQUIRY_RESET });
+  }, [dispatch]);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(bulkMailAction({ title, message }));
