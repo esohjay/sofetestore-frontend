@@ -71,7 +71,7 @@ export default function SalesFormScreen(props) {
     return (
       <Box>
         {products && products.length > 0 && (
-          <FormControl id="region" isRequired>
+          <FormControl id="product" isRequired>
             <RadioGroup value={`${product._id}`}>
               {products.map((item) => (
                 <div key={item._id}>
@@ -201,7 +201,7 @@ export default function SalesFormScreen(props) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="name" isRequired>
+              <FormControl id="customerName" isRequired>
                 <FormLabel color="blue.900">Customer Name</FormLabel>
                 <Input
                   value={customerName}
@@ -209,7 +209,7 @@ export default function SalesFormScreen(props) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="phone">
+              <FormControl id="customerPhone">
                 <FormLabel color="blue.900">Customer Phone</FormLabel>
                 <Input
                   type="number"

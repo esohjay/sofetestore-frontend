@@ -98,7 +98,7 @@ export const listOrderMine =
     } = getState();
     try {
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_URL}/api/orders?${page}`,
+        `${process.env.REACT_APP_URL}/api/orders?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,

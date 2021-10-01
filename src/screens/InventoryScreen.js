@@ -582,7 +582,7 @@ export default function InventoryScreen(props) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="name" isRequired>
+              <FormControl id="customerName" isRequired>
                 <FormLabel color="blue.900">Customer Name</FormLabel>
                 <Input
                   value={customerName}
@@ -590,7 +590,7 @@ export default function InventoryScreen(props) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="phone">
+              <FormControl id="customerPhone">
                 <FormLabel color="blue.900">Customer Phone</FormLabel>
                 <Input
                   type="number"

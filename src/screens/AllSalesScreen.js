@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteSales, allSales } from "../actions/salesActions";
+import Pagination from "../components/Pagination";
 import { Link } from "react-router-dom";
 import Alert from "../components/Alert";
 import ModalPanel from "../components/Modal";
@@ -59,6 +60,7 @@ const Filter = () => {
       })
     );
   };
+
   return (
     <Box pb={4}>
       <Stack as={"nav"} spacing={4}>
@@ -176,11 +178,14 @@ const Filter = () => {
 };
 
 export default function AllSalesScreen() {
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const salesDelete = useSelector((state) => state.salesDelete);
   const { success: salesDeleteSuccess } = salesDelete;
   const salesList = useSelector((state) => state.salesList);
-  const { loading, error, sales } = salesList;
+  const { loading, error, sales, sale } = salesList;
   const salesUpdate = useSelector((state) => state.salesUpdate);
   const { success: salesUpdateSuccess } = salesUpdate;
   const dispatch = useDispatch();
@@ -193,6 +198,37 @@ export default function AllSalesScreen() {
     dispatch(deleteSales(id));
   };
 
+  const pageHandler = (page) => {
+    dispatch(
+      allSales({
+        page,
+      })
+    );
+  };
+  const handleNextbtn = () => {
+    dispatch(
+      allSales({
+        page: sale.page + 1,
+      })
+    );
+
+    if (sale.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(
+      allSales({
+        page: sale.page - 1,
+      })
+    );
+
+    if ((sale.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
   return (
     <Box>
       <Box m="20px" p="1rem">
@@ -231,7 +267,7 @@ export default function AllSalesScreen() {
         </Text>
         {sales && sales.length > 0 && (
           <Text textAlign="center" m="0.5rem" color="blue.900">
-            ( {sales.length} sales)
+            ( {sale.totalDocs} sales)
           </Text>
         )}
         <Center>
@@ -429,6 +465,12 @@ export default function AllSalesScreen() {
                 </div>
               ))}
             </Stack>
+            <Pagination
+              pageInfo={sale}
+              pageHandler={pageHandler}
+              handleNextbtn={handleNextbtn}
+              handlePrevbtn={handlePrevbtn}
+            />
           </Box>
         )}
       </Box>

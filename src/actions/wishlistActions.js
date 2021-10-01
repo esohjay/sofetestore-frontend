@@ -55,7 +55,7 @@ export const updateWishlist = (productId, info) => async (dispatch) => {
 };
 
 export const detailsWishlist = (id) => async (dispatch) => {
-  dispatch({ type: WISHLIST_DETAILS_REQUEST });
+  dispatch({ type: WISHLIST_DETAILS_REQUEST, payload: id });
 
   try {
     const { data } = await Axios.get(

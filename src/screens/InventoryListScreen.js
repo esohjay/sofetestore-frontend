@@ -5,6 +5,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Alert from "../components/Alert";
 import ModalPanel from "../components/Modal";
+import Pagination from "../components/Pagination";
 import UpdateForm from "../screens/InventoryEditForm";
 import { Link } from "react-router-dom";
 import { EditIcon } from "@chakra-ui/icons";
@@ -174,9 +175,12 @@ const Filter = () => {
   );
 };
 export default function InventoryListScreen(props) {
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   const inventoryList = useSelector((state) => state.inventoryList);
-  const { loading, error, inventory } = inventoryList;
+  const { loading, error, inventory, inventoryDetails } = inventoryList;
   const inventoryUpdate = useSelector((state) => state.inventoryUpdate);
   const { success } = inventoryUpdate;
   const inventoryDelete = useSelector((state) => state.inventoryDelete);
@@ -193,6 +197,37 @@ export default function InventoryListScreen(props) {
   }, [dispatch, successDelete, success]);
   const deleteHandler = (id) => {
     dispatch(deleteInventory(id));
+  };
+  const pageHandler = (page) => {
+    dispatch(
+      allInventory({
+        page,
+      })
+    );
+  };
+  const handleNextbtn = () => {
+    dispatch(
+      allInventory({
+        page: inventoryDetails.page + 1,
+      })
+    );
+
+    if (inventoryDetails.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(
+      allInventory({
+        page: inventoryDetails.page - 1,
+      })
+    );
+
+    if ((inventoryDetails.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
   };
   return (
     <Box m="20px">
@@ -215,7 +250,7 @@ export default function InventoryListScreen(props) {
       </Text>
       {inventory && inventory.length > 0 && (
         <Text textAlign="center" m="0.5rem" color="blue.900">
-          ( {inventory.length} batches)
+          ( {inventoryDetails.totalDocs} batches)
         </Text>
       )}
       <Center>
@@ -262,41 +297,51 @@ export default function InventoryListScreen(props) {
           title="Oops"
         ></MessageBox>
       ) : (
-        <Table size="sm">
-          <Thead>
-            <Tr color="blue.900">
-              <Th>Batch Name</Th>
-              <Th>Date</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {inventory.map((item) => (
-              <Tr key={item._id}>
-                <Td>
-                  <Link to={`/inventorylist/${item._id}`}>{item.batch}</Link>
-                </Td>
-                <Td>{item.date.substring(0, 10)}</Td>
-                <Td>
-                  <HStack>
-                    <ModalPanel
-                      content={<UpdateForm inventory={item} />}
-                      title="Edit Batch"
-                      variant={<EditIcon />}
-                    />
-                    <Alert
-                      text={`Delete ${item.batch}?`}
-                      description={
-                        "Are you sure? You can't undo this action afterwards."
-                      }
-                      click={() => deleteHandler(item._id)}
-                    />
-                  </HStack>
-                </Td>
+        <Box>
+          <Table size="sm">
+            <Thead>
+              <Tr color="blue.900">
+                <Th>Batch Name</Th>
+                <Th>Date</Th>
+                <Th>Action</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {inventory.map((item) => (
+                <Tr key={item._id}>
+                  <Td>
+                    <Link to={`/inventorylist/${item._id}`}>{item.batch}</Link>
+                  </Td>
+                  <Td>{item.date.substring(0, 10)}</Td>
+                  <Td>
+                    <HStack>
+                      <ModalPanel
+                        content={<UpdateForm inventory={item} />}
+                        title="Edit Batch"
+                        variant={<EditIcon />}
+                      />
+                      <Alert
+                        text={`Delete ${item.batch}?`}
+                        description={
+                          "Are you sure? You can't undo this action afterwards."
+                        }
+                        click={() => deleteHandler(item._id)}
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Box my="25px">
+            <Pagination
+              pageInfo={inventoryDetails}
+              pageHandler={pageHandler}
+              handleNextbtn={handleNextbtn}
+              handlePrevbtn={handlePrevbtn}
+            />
+          </Box>
+        </Box>
       )}
     </Box>
   );

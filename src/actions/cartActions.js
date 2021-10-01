@@ -92,12 +92,15 @@ export const removeCartItem = (productId) => async (dispatch) => {
   }
 };
 
-export const detailsCart = (id) => async (dispatch) => {
-  dispatch({ type: CART_DETAILS_REQUEST });
+export const detailsCart = (id) => async (dispatch, getState) => {
+  const {
+    cart: { cartId },
+  } = getState();
+  dispatch({ type: CART_DETAILS_REQUEST, payload: cartId.idCart });
 
   try {
     const { data } = await Axios.get(
-      `${process.env.REACT_APP_URL}/api/cart/cartitems/${id}`
+      `${process.env.REACT_APP_URL}/api/cart/cartitems/${cartId.idCart}`
     );
     dispatch({ type: CART_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateInventory } from "../actions/inventoryActions";
-
+import { convertDate } from "../utilities/changeDate";
 import {
   Box,
   FormLabel,
@@ -26,7 +26,7 @@ export default function UpdateForm({ inventory }) {
       setCost(inventory.cost);
       setDescription(inventory.description);
       setQuantity(inventory.quantity);
-      setDate(inventory.date);
+      setDate(convertDate(inventory.date));
       setOrigin(inventory.origin);
     }
   }, [inventory]);

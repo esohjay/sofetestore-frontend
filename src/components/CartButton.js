@@ -94,16 +94,20 @@ export default function CartButton(props) {
               <HStack>
                 {product.variation.map((x) => (
                   <div key={x.value}>
-                    <Box
-                      border="solid"
-                      p="10px"
-                      cursor="pointer"
-                      value={x.value}
-                      borderColor={x.value === size ? "blue.900" : "yellow.400"}
-                      onClick={() => setSize(x.value)}
-                    >
-                      {x.value}
-                    </Box>
+                    {x.quantity > 0 && (
+                      <Box
+                        border="solid"
+                        p="10px"
+                        cursor="pointer"
+                        value={x.value}
+                        borderColor={
+                          x.value === size ? "blue.900" : "yellow.400"
+                        }
+                        onClick={() => setSize(x.value)}
+                      >
+                        {x.value}
+                      </Box>
+                    )}
                   </div>
                 ))}
               </HStack>

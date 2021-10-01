@@ -185,7 +185,13 @@ export default function ManageImageScreen(props) {
                     title="Oops!"
                   ></MessageBox>
                 )}
-                {imgError && <MessageBox variant="danger">{error}</MessageBox>}
+                {imgError && (
+                  <MessageBox
+                    status="error"
+                    description={error}
+                    title="Oops"
+                  ></MessageBox>
+                )}
                 <Button
                   type="submit"
                   color="yellow.400"

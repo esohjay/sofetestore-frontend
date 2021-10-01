@@ -120,7 +120,7 @@ export default function OrderScreen(props) {
                   <MessageBox variant="danger">{errorDeliver}</MessageBox>
                 )}
                 <FormControl id="region" isRequired>
-                  <FormLabel color="blue.900">Region</FormLabel>
+                  <FormLabel color="blue.900">Update Status</FormLabel>
                   <Select
                     color="blue.700"
                     value={status}
@@ -139,6 +139,7 @@ export default function OrderScreen(props) {
                   variant="outline"
                   onClick={deliverHandler}
                   size="sm"
+                  m="8px"
                 >
                   Deliver Order
                 </Button>

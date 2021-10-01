@@ -72,7 +72,7 @@ export default function BulkMailScreen(props) {
           <form onSubmit={submitHandler}>
             <Box rounded={"lg"} boxShadow={"lg"} p={8}>
               <Stack spacing={4}>
-                <FormControl id="name" isRequired>
+                <FormControl id="title" isRequired>
                   <FormLabel>Messsage Title</FormLabel>
                   <Input
                     type="text"

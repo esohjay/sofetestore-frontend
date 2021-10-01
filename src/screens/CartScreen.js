@@ -40,10 +40,12 @@ export default function CartScreen(props) {
     dispatch(detailsCart(cartId.idCart));
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, updateSuccess, cartId]);
+
   const qtyHandler = (prod, qty, size) => {
     dispatch(updateCart(prod, { qty, size, cartId: cartId.idCart }));
   };
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
+  console.log(cartId.idCart);
   /*const removeHandler = (prod) => {
     dispatch(removeCartItem(prod))
     if(removeSuccess){

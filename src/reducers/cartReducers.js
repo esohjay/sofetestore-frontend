@@ -112,7 +112,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_CREATE_SUCCESS:
       return {
-        cartId: action.payload,
+        ...state,
       };
 
     case CART_SAVE_SHIPPING_ADDRESS:

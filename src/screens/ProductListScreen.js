@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Pagination from "../components/Pagination";
 import {
   listProducts,
   dealProduct,
@@ -30,8 +31,11 @@ import { EditIcon } from "@chakra-ui/icons";
 import { FaFire, FaCalculator, FaImage } from "react-icons/fa";
 import { PRODUCT_DELETE_RESET } from "../constants/productConstants";
 export default function ProductListScreen(props) {
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const { loading, error, products, prod } = productList;
   const productDeal = useSelector((state) => state.productDeal);
   const { product: dealProducts } = productDeal;
   const productDelete = useSelector((state) => state.productDelete);
@@ -42,6 +46,38 @@ export default function ProductListScreen(props) {
   useEffect(() => {
     dispatch(listProducts({}));
   }, [dispatch, dealProducts, deleted]);
+  const pageHandler = (page) => {
+    dispatch(
+      listProducts({
+        page,
+        nameSku,
+      })
+    );
+  };
+  const handleNextbtn = () => {
+    dispatch(
+      listProducts({
+        page: prod.page + 1,
+      })
+    );
+
+    if (prod.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(
+      listProducts({
+        page: prod.page - 1,
+      })
+    );
+
+    if ((prod.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
 
   const deleteHandler = (product) => {
     dispatch(deleteProduct(product));
@@ -75,7 +111,7 @@ export default function ProductListScreen(props) {
       </Text>
       {products && products.length > 0 && (
         <Text textAlign="center" m="1rem" color="blue.900">
-          ( {products.length} products)
+          ( {prod.totalDocs} products)
         </Text>
       )}
       <Box align="center" my="5px">
@@ -376,6 +412,12 @@ export default function ProductListScreen(props) {
               )}
             </div>
           ))}
+          <Pagination
+            pageInfo={prod}
+            pageHandler={pageHandler}
+            handleNextbtn={handleNextbtn}
+            handlePrevbtn={handlePrevbtn}
+          />
         </Box>
       )}
     </Box>

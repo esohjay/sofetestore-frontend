@@ -134,7 +134,7 @@ export default function UpdateProductScreen(props) {
                 />
               </FormControl>
 
-              <FormControl id="origin" isRequired>
+              <FormControl id="sku" isRequired>
                 <FormLabel color="blue.900">SKU</FormLabel>
                 <Input
                   placeholder="SKU"

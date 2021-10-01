@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, listUsers } from "../actions/userActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
+import Pagination from "../components/Pagination";
 import Alert from "../components/Alert";
 import { USER_DETAILS_RESET } from "../constants/userConstants";
 import {
@@ -23,9 +24,12 @@ import {
 import { EditIcon } from "@chakra-ui/icons";
 import { USER_DELETE_RESET } from "../constants/userConstants";
 export default function UserListScreen(props) {
+  const [pageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
   const [search, setSearch] = useState("");
   const userList = useSelector((state) => state.userList);
-  const { loading, error, users } = userList;
+  const { loading, error, users, user } = userList;
 
   const userDelete = useSelector((state) => state.userDelete);
   const {
@@ -33,6 +37,7 @@ export default function UserListScreen(props) {
     error: errorDelete,
     success: successDelete,
   } = userDelete;
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(listUsers({}));
@@ -45,6 +50,37 @@ export default function UserListScreen(props) {
   };
   const submitHandler = () => {
     dispatch(listUsers({ search }));
+  };
+  const pageHandler = (page) => {
+    dispatch(
+      listUsers({
+        page,
+      })
+    );
+  };
+  const handleNextbtn = () => {
+    dispatch(
+      listUsers({
+        page: user.page + 1,
+      })
+    );
+
+    if (user.page + 1 > maxPageNumberLimit) {
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+  const handlePrevbtn = () => {
+    dispatch(
+      listUsers({
+        page: user.page - 1,
+      })
+    );
+
+    if ((user.page - 1) % pageNumberLimit === 0) {
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
   };
   return (
     <Box m="20px">
@@ -59,7 +95,7 @@ export default function UserListScreen(props) {
       </Text>
       {users && users.length > 0 && (
         <Text textAlign="center" m="0.5rem" color="blue.900">
-          ( {users.length} users)
+          ( {user.totalDocs} users)
         </Text>
       )}
       <Box align="center" my="40px">
@@ -67,7 +103,7 @@ export default function UserListScreen(props) {
           <FormControl id="name" isRequired>
             <Input
               focusBorderColor="yellow.400"
-              placeholder="Product name or Sku"
+              placeholder="User email/name"
               color={"yellow.400"}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -111,44 +147,54 @@ export default function UserListScreen(props) {
           title="Oops"
         ></MessageBox>
       ) : (
-        <Table size="sm">
-          <Thead>
-            <Tr color="blue.900">
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => (
-              <Tr key={user._id}>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  <HStack>
-                    <IconButton
-                      variant="outline"
-                      color="blue.900"
-                      _hover={{ color: "yellow.400" }}
-                      icon={<EditIcon />}
-                      size="xs"
-                      onClick={() =>
-                        props.history.push(`/user/${user._id}/edit`)
-                      }
-                    />
-                    <Alert
-                      text={`Delete ${user.name}?`}
-                      description={
-                        "Are you sure? You can't undo this action afterwards."
-                      }
-                      click={() => deleteHandler(user)}
-                    />
-                  </HStack>
-                </Td>
+        <Box>
+          <Table size="sm">
+            <Thead>
+              <Tr color="blue.900">
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Action</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {users.map((user) => (
+                <Tr key={user._id}>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>
+                    <HStack>
+                      <IconButton
+                        variant="outline"
+                        color="blue.900"
+                        _hover={{ color: "yellow.400" }}
+                        icon={<EditIcon />}
+                        size="xs"
+                        onClick={() =>
+                          props.history.push(`/user/${user._id}/edit`)
+                        }
+                      />
+                      <Alert
+                        text={`Delete ${user.name}?`}
+                        description={
+                          "Are you sure? You can't undo this action afterwards."
+                        }
+                        click={() => deleteHandler(user)}
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+          <Box my="25px">
+            <Pagination
+              pageInfo={user}
+              pageHandler={pageHandler}
+              handleNextbtn={handleNextbtn}
+              handlePrevbtn={handlePrevbtn}
+            />
+          </Box>
+        </Box>
       )}
     </Box>
   );

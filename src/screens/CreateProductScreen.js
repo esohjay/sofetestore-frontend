@@ -58,8 +58,14 @@ export default function CreateProductScreen(props) {
 
   return (
     <Box m="20px">
-      {loading && <LoadingBox></LoadingBox>}
-      {error && <MessageBox variant="danger">{error}</MessageBox>}
+      {loading && <LoadingBox size="md"></LoadingBox>}
+      {error && (
+        <MessageBox
+          status="error"
+          description={error}
+          title="Oops"
+        ></MessageBox>
+      )}
       <Button
         leftIcon={<FaLongArrowAltLeft />}
         colorScheme="blue"
@@ -88,7 +94,7 @@ export default function CreateProductScreen(props) {
                 />
               </FormControl>
 
-              <FormControl id="origin" isRequired>
+              <FormControl id="sku" isRequired>
                 <FormLabel color="blue.900">SKU</FormLabel>
                 <Input
                   placeholder="SKU"

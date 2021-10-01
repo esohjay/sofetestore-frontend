@@ -120,6 +120,7 @@ export const allInventory =
     costMax = 0,
     dateMin = "",
     dateMax = "",
+    page = 1,
   }) =>
   async (dispatch, getState) => {
     dispatch({ type: INVENTORY_LIST_REQUEST });
@@ -128,7 +129,7 @@ export const allInventory =
     } = getState();
     try {
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_URL}/api/inventory?batch=${batch}&origin=${origin}&costMin=${costMin}&costMax=${costMax}&dateMin=${dateMin}&dateMax=${dateMax}`,
+        `${process.env.REACT_APP_URL}/api/inventory?batch=${batch}&origin=${origin}&costMin=${costMin}&costMax=${costMax}&dateMin=${dateMin}&dateMax=${dateMax}&page=${page}`,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }

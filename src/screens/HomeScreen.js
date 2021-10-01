@@ -71,6 +71,7 @@ export default function HomeScreen() {
     dispatch(listProducts({}));
     //dispatch(detailsCart());
     //dispatch(detailsWishlist());
+    dispatch({ type: SUBSCRIPTION_RESET });
     dispatch({ type: WISHLIST_CREATE_RESET });
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, successWishlistCreate, successCartCreate]);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateSales } from "../actions/salesActions";
-
+import { convertDate } from "../utilities/changeDate";
 import {
   Box,
   FormLabel,
@@ -28,7 +28,7 @@ export default function EditSales({ sales }) {
       setCustomerPhone(sales.customerPhone);
       setDescription(sales.description);
       setQuantity(sales.quantity);
-      setDate(sales.date);
+      setDate(convertDate(sales.date));
       setPrice(sales.price);
       setSize(sales.size);
       setBatch(sales.batch);
@@ -99,7 +99,7 @@ export default function EditSales({ sales }) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="name" isRequired>
+              <FormControl id="customerName" isRequired>
                 <FormLabel color="blue.900">Customer Name</FormLabel>
                 <Input
                   value={customerName}
@@ -107,7 +107,7 @@ export default function EditSales({ sales }) {
                   color="blue.700"
                 />
               </FormControl>
-              <FormControl id="phone">
+              <FormControl id="customerPhone">
                 <FormLabel color="blue.900">Customer Phone</FormLabel>
                 <Input
                   type="number"

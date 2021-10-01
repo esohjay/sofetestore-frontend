@@ -97,6 +97,7 @@ export const allSales =
     priceMax = "",
     batch = "",
     nameSku = "",
+    page = 1,
   }) =>
   async (dispatch, getState) => {
     dispatch({ type: SALES_LIST_REQUEST });
@@ -105,7 +106,7 @@ export const allSales =
     } = getState();
     try {
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_URL}/api/sales?batch=${batch}&nameSku=${nameSku}&priceMin=${priceMin}&priceMax=${priceMax}&dateMin=${dateMin}&dateMax=${dateMax}`,
+        `${process.env.REACT_APP_URL}/api/sales?batch=${batch}&nameSku=${nameSku}&priceMin=${priceMin}&priceMax=${priceMax}&dateMin=${dateMin}&dateMax=${dateMax}&page=${page}`,
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }

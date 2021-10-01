@@ -41,7 +41,7 @@ export const wishItemsReducer = (state = {}, action) => {
   switch (action.type) {
     case WISHLIST_CREATE_SUCCESS:
       return {
-        wishlistId: action.payload,
+        ...state,
       };
 
     default:

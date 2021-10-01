@@ -39,6 +39,7 @@ import {
   RadioGroup,
   Grid,
   Spacer,
+  //Text,
 
   // useMediaQuery,
 } from "@chakra-ui/react";
@@ -57,7 +58,7 @@ export default function AllProductsScreen() {
   const [priceMax, setPriceMax] = useState("");
   const [avRating, setAvRating] = useState("");
   const dispatch = useDispatch();
-  // const [hasMore, setHasMore] = useState(true);
+  //const [hasMore, setHasMore] = useState(true);
   const [pageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
@@ -182,7 +183,37 @@ export default function AllProductsScreen() {
       setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
   };
-  /* const pageIncrementBtn = () => {
+
+  /* 
+  const loadMoreBtn = () => {
+    dispatch(
+      listProducts({
+        page: prod.nextPage,
+        name,
+        category,
+        priceMin,
+        priceMax,
+        avRating,
+        order,
+      })
+    );
+    setProductBatch((prevProductBatch) => {
+      return [...prevProductBatch, ...products];
+    });
+  };
+
+  useEffect(() => {
+    if (products && productBatch.length === 0) {
+      setProductBatch((prevProductBatch) => {
+        return [...prevProductBatch, ...products];
+      });
+    }
+  }, []);
+
+  console.log(productBatch);
+  
+  
+  const pageIncrementBtn = () => {
     setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
     setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
   };
@@ -215,9 +246,7 @@ export default function AllProductsScreen() {
     if (products && !successCartCreate && !successWishlistCreate) {
       setProductBatch(
         (prevProductBatch) => {
-          const uniq = products.filter((product)=>{
-            product._id ==
-          })
+         
           return [...prevProductBatch, ...products];
         },
         console.log("first"),
@@ -251,7 +280,34 @@ export default function AllProductsScreen() {
     } else {
       setHasMore(false);
     }
-  };*/
+  };
+  
+  
+  const fetchMoreData = () => {
+    //dispatch(listProducts({ order }));
+    if (prod.hasNextPage) {
+      dispatch(
+        listProducts({
+          page: prod.nextPage,
+          name,
+          category,
+          priceMin,
+          priceMax,
+          avRating,
+          order,
+        })
+      );
+      setProductBatch((prevProductBatch) => {
+        return [...prevProductBatch, ...products];
+      });
+      //products.concat(products);
+      //setProductBatch([...productBatch, products]);
+    } else {
+      setHasMore(false);
+    }
+  };
+  
+  */
 
   return (
     <div>
@@ -452,6 +508,7 @@ export default function AllProductsScreen() {
             ></MessageBox>
           )
         )}
+
         {products && products.length > 0 && (
           <Center>
             <Box m="10px" w="90%" alignItems="center" justifyItems="center">
@@ -473,6 +530,7 @@ export default function AllProductsScreen() {
             </Box>
           </Center>
         )}
+
         <Pagination
           pageInfo={prod}
           pageHandler={pageHandler}
@@ -483,7 +541,17 @@ export default function AllProductsScreen() {
     </div>
   );
 }
-/* 
+/*
+
+<Button
+                onClick={loadMoreBtn}
+                disabled={prod.page === prod.totalPages}
+              >
+                Load More
+              </Button>
+
+
+
 {prod.hasPrevPage && (
               <Button size="xs" onClick={() => pageHandler(prod.page - 1)}>
                 Prev

@@ -131,7 +131,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 };
 
 export const listUsers =
-  ({ search = "" }) =>
+  ({ search = "", page = 1 }) =>
   async (dispatch, getState) => {
     dispatch({ type: USER_LIST_REQUEST });
     try {
@@ -139,7 +139,7 @@ export const listUsers =
         userSignin: { userInfo },
       } = getState();
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_URL}/api/users?search=${search}`,
+        `${process.env.REACT_APP_URL}/api/users?search=${search}&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,

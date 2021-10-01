@@ -76,8 +76,9 @@ export default function VariationScreen(props) {
     <Box m="2rem" p="1rem">
       <Button
         leftIcon={<FaLongArrowAltLeft />}
-        colorScheme="blue"
+        color="blue.900"
         variant="outline"
+        bg="transparent"
         onClick={() => props.history.push(`/productlist`)}
       >
         Go back
@@ -123,7 +124,7 @@ export default function VariationScreen(props) {
               )}
             </Box>
 
-            <Box m="rem" shadow="lg" p="1rem">
+            <Box m="5rem" shadow="lg" p="1rem">
               <FormControl id="type">
                 <FormLabel>Type</FormLabel>
                 <Input
@@ -146,7 +147,7 @@ export default function VariationScreen(props) {
                   onChange={(e) => setValue(e.target.value)}
                 />
               </FormControl>
-              <FormControl id="value">
+              <FormControl id="quantity">
                 <FormLabel>Quantity</FormLabel>
                 <Input
                   type="number"
