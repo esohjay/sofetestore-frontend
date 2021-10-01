@@ -15,7 +15,7 @@ import {
   CART_DETAILS_REQUEST,
   CART_DETAILS_FAIL,
   CART_DETAILS_SUCCESS,
-  //CART_ADD_ITEM,
+  CART_ADD_ITEM,
   // CART_REMOVE_ITEM,
   // CART_EMPTY,
   CART_SAVE_SHIPPING_METHOD,
@@ -111,8 +111,15 @@ export const cartRemoveReducer = (state = {}, action) => {
 export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_CREATE_SUCCESS:
+      console.log(state.cartId);
       return {
         ...state,
+        cartId: state.cartId,
+      };
+
+    case CART_ADD_ITEM:
+      return {
+        cartId: state.cartId,
       };
 
     case CART_SAVE_SHIPPING_ADDRESS:

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { detailsCart, updateCart } from "../actions/cartActions";
+import { detailsCart, updateCart, deleteCart } from "../actions/cartActions";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import {
@@ -30,6 +30,8 @@ export default function CartScreen(props) {
   const { loading, error, items } = cartDetails;
   const cartUpdate = useSelector((state) => state.cartUpdate);
   const { success: updateSuccess } = cartUpdate;
+  const cartDelete = useSelector((state) => state.cartDelete);
+  const { success: deleteSuccess } = cartDelete;
   const cart = useSelector((state) => state.cart);
   const { cartId } = cart;
   // const cartRemove = useSelector((state) => state.cartRemove);
@@ -39,10 +41,13 @@ export default function CartScreen(props) {
   useEffect(() => {
     dispatch(detailsCart(cartId.idCart));
     dispatch({ type: CART_CREATE_RESET });
-  }, [dispatch, updateSuccess, cartId]);
+  }, [dispatch, updateSuccess, cartId.idCart, deleteSuccess]);
 
   const qtyHandler = (prod, qty, size) => {
     dispatch(updateCart(prod, { qty, size, cartId: cartId.idCart }));
+  };
+  const removeCart = () => {
+    dispatch(deleteCart(cartId.idCart));
   };
   const [isLargerThan676] = useMediaQuery("(min-width: 676px)");
   console.log(cartId.idCart);
@@ -76,14 +81,15 @@ export default function CartScreen(props) {
           title="There was an Error"
         ></MessageBox>
       ) : items.length === 0 ? (
-        <Text>
-          Cart is empty.{" "}
+        <Box align="center">
+          <Text mb="5px">Cart is empty.</Text>
+          <Text mb="10px">Refresh page if you've already added an item.</Text>
           <Link to="/shop">
             <Button color="blue.900" borderColor variant="outline">
               Go Shopping
             </Button>
           </Link>
-        </Text>
+        </Box>
       ) : (
         <>
           {isLargerThan676 && (
@@ -112,196 +118,223 @@ export default function CartScreen(props) {
               <Box></Box>
             </SimpleGrid>
           )}
-          {items.map((item) => (
-            <div key={`${item.product.id}${item.size}`}>
-              {isLargerThan676 && (
-                <SimpleGrid
-                  columns={[3, null, 6]}
-                  spacing="40px"
-                  borderBottom="solid"
-                  borderBottomColor="blue.900"
-                  borderBottomWidth="0.5px"
-                  my="1rem"
-                  py="1rem"
-                >
-                  <Box h="60px" w="60px">
-                    <Image
-                      boxSize="full"
-                      objectFit="cover"
-                      src={
-                        item.product.images.length > 0
-                          ? item.product.images[0].url
-                          : "/images/sofetelogo.jpg"
-                      }
-                      alt={item.product.name}
-                      objectPosition="center center"
-                      cursor="pointer"
-                    />
-                  </Box>
-                  <HStack color="blue.900" _hover={{ color: "yellow.400" }}>
-                    <Link to={`/product/${item.product.id}`}>
-                      {item.product.name}
-                    </Link>
-                  </HStack>
-                  <HStack>
-                    <Text color="blue.900">{item.size}</Text>
-                  </HStack>
-                  <HStack>
-                    <IconButton
-                      variant="outline"
-                      color="blue.900"
-                      _hover={{ color: "yellow.400" }}
-                      icon={<MinusIcon />}
-                      size="xs"
-                      onClick={(e) =>
-                        qtyHandler(item.product.id, 0.3, item.size)
-                      }
-                      isDisabled={item.quantity <= 1}
-                    />
-                    <FormControl w="30px">
-                      <Input
-                        defaultValue={item.quantity}
-                        size="xs"
-                        onBlur={(e) =>
-                          qtyHandler(item.product.id, e.target.value, item.size)
-                        }
-                      ></Input>
-                    </FormControl>
-                    <IconButton
-                      variant="outline"
-                      color="blue.900"
-                      _hover={{ color: "yellow.400" }}
-                      icon={<AddIcon />}
-                      size="xs"
-                      onClick={(e) =>
-                        qtyHandler(item.product.id, 0.5, item.size)
-                      }
-                      isDisabled={item.quantity >= item.product.variation}
-                    />
-                  </HStack>
-
-                  <HStack>
-                    <Text color="blue.900">₦{item.product.price}</Text>
-                  </HStack>
-                  <HStack>
-                    <IconButton
-                      variant="outline"
-                      color="blue.900"
-                      _hover={{ color: "yellow.400" }}
-                      aria-label="Send email"
-                      icon={<DeleteIcon />}
-                      size="xs"
-                      w="10px"
-                      onClick={(e) => qtyHandler(item.product.id, 0, item.size)}
-                    />
-                  </HStack>
-                </SimpleGrid>
-              )}
-              {!isLargerThan676 && (
-                <Box>
-                  <Stack
-                    direction="column"
-                    my="2rem"
-                    borderLeftWidth="1px"
-                    borderRightWidth="1px"
-                    p="10px"
-                    borderRadius="5px"
-                    shadow="lg"
+          <Box align="center" mb="30px">
+            {items.map((item) => (
+              <div key={`${item.product.id}${item.size}`}>
+                {isLargerThan676 && (
+                  <SimpleGrid
+                    columns={[3, null, 6]}
+                    spacing="40px"
+                    borderBottom="solid"
+                    borderBottomColor="blue.900"
+                    borderBottomWidth="0.5px"
+                    my="1rem"
+                    py="1rem"
                   >
-                    <Box
-                      borderBottom="solid"
-                      borderBottomColor="blue.900"
-                      borderBottomWidth="0.5px"
-                    >
-                      <Grid
-                        templateRows="repeat(1, 1fr)"
-                        templateColumns="repeat(5, 1fr)"
-                        gap={4}
-                      >
-                        <GridItem colSpan={1}>
-                          <Box h="auto" w="auto">
-                            <Image
-                              boxSize="full"
-                              objectFit="cover"
-                              src={
-                                item.product.images.length > 0
-                                  ? item.product.images[0].url
-                                  : "/images/sofetelogo.jpg"
-                              }
-                              alt={item.product.name}
-                              objectPosition="center center"
-                              cursor="pointer"
-                            />
-                          </Box>
-                        </GridItem>
-                        <GridItem colSpan={4}>
-                          <Stack direction="column" spacing="1px">
-                            <Text color="blue.900">{item.product.name}</Text>
-                            <Text color="blue.900">{item.size}</Text>
-                            <Text color="blue.900">₦{item.product.price}</Text>
-                          </Stack>
-                        </GridItem>
-                      </Grid>
+                    <Box h="60px" w="60px">
+                      <Image
+                        boxSize="full"
+                        objectFit="cover"
+                        src={
+                          item.product.images.length > 0
+                            ? item.product.images[0].url
+                            : "/images/sofetelogo.jpg"
+                        }
+                        alt={item.product.name}
+                        objectPosition="center center"
+                        cursor="pointer"
+                      />
                     </Box>
-                    <Box>
-                      <Flex>
-                        <IconButton
-                          variant="outline"
-                          color="blue.900"
-                          _hover={{ color: "yellow.400" }}
-                          aria-label="Send email"
-                          icon={<DeleteIcon />}
+                    <HStack color="blue.900" _hover={{ color: "yellow.400" }}>
+                      <Link to={`/product/${item.product.id}`}>
+                        {item.product.name}
+                      </Link>
+                    </HStack>
+                    <HStack>
+                      <Text color="blue.900">{item.size}</Text>
+                    </HStack>
+                    <HStack>
+                      <IconButton
+                        variant="outline"
+                        color="blue.900"
+                        _hover={{ color: "yellow.400" }}
+                        icon={<MinusIcon />}
+                        size="xs"
+                        onClick={(e) =>
+                          qtyHandler(item.product.id, 0.3, item.size)
+                        }
+                        isDisabled={item.quantity <= 1}
+                      />
+                      <FormControl w="30px">
+                        <Input
+                          defaultValue={item.quantity}
                           size="xs"
-                          w="10px"
-                          onClick={(e) =>
-                            qtyHandler(item.product.id, 0, item.size)
+                          onBlur={(e) =>
+                            qtyHandler(
+                              item.product.id,
+                              e.target.value,
+                              item.size
+                            )
                           }
-                        />
-                        <Spacer />
-                        <HStack>
+                        ></Input>
+                      </FormControl>
+                      <IconButton
+                        variant="outline"
+                        color="blue.900"
+                        _hover={{ color: "yellow.400" }}
+                        icon={<AddIcon />}
+                        size="xs"
+                        onClick={(e) =>
+                          qtyHandler(item.product.id, 0.5, item.size)
+                        }
+                        isDisabled={item.quantity >= item.product.variation}
+                      />
+                    </HStack>
+
+                    <HStack>
+                      <Text color="blue.900">₦{item.product.price}</Text>
+                    </HStack>
+                    <HStack>
+                      <IconButton
+                        variant="outline"
+                        color="blue.900"
+                        _hover={{ color: "yellow.400" }}
+                        aria-label="Send email"
+                        icon={<DeleteIcon />}
+                        size="xs"
+                        w="10px"
+                        onClick={(e) =>
+                          qtyHandler(item.product.id, 0, item.size)
+                        }
+                      />
+                    </HStack>
+                  </SimpleGrid>
+                )}
+                {!isLargerThan676 && (
+                  <Box>
+                    <Stack
+                      direction="column"
+                      my="2rem"
+                      borderLeftWidth="1px"
+                      borderRightWidth="1px"
+                      p="10px"
+                      borderRadius="5px"
+                      shadow="lg"
+                    >
+                      <Box
+                        borderBottom="solid"
+                        borderBottomColor="blue.900"
+                        borderBottomWidth="0.5px"
+                      >
+                        <Grid
+                          templateRows="repeat(1, 1fr)"
+                          templateColumns="repeat(5, 1fr)"
+                          gap={4}
+                        >
+                          <GridItem colSpan={1}>
+                            <Box h="auto" w="auto">
+                              <Image
+                                boxSize="full"
+                                objectFit="cover"
+                                src={
+                                  item.product.images.length > 0
+                                    ? item.product.images[0].url
+                                    : "/images/sofetelogo.jpg"
+                                }
+                                alt={item.product.name}
+                                objectPosition="center center"
+                                cursor="pointer"
+                              />
+                            </Box>
+                          </GridItem>
+                          <GridItem colSpan={4}>
+                            <Stack direction="column" spacing="1px">
+                              <Text color="blue.900">{item.product.name}</Text>
+                              <Text color="blue.900">{item.size}</Text>
+                              <Text color="blue.900">
+                                ₦{item.product.price}
+                              </Text>
+                            </Stack>
+                          </GridItem>
+                        </Grid>
+                      </Box>
+                      <Box>
+                        <Flex>
                           <IconButton
                             variant="outline"
                             color="blue.900"
                             _hover={{ color: "yellow.400" }}
-                            icon={<MinusIcon />}
+                            aria-label="Send email"
+                            icon={<DeleteIcon />}
                             size="xs"
+                            w="10px"
                             onClick={(e) =>
-                              qtyHandler(item.product.id, 0.3, item.size)
+                              qtyHandler(item.product.id, 0, item.size)
                             }
-                            isDisabled={item.quantity <= 1}
                           />
-                          <FormControl w="30px">
-                            <Input
-                              value={item.quantity}
+                          <Spacer />
+                          <HStack>
+                            <IconButton
+                              variant="outline"
+                              color="blue.900"
+                              _hover={{ color: "yellow.400" }}
+                              icon={<MinusIcon />}
                               size="xs"
-                              onBlur={(e) =>
-                                qtyHandler(
-                                  item.product.id,
-                                  e.target.value,
-                                  item.size
-                                )
+                              onClick={(e) =>
+                                qtyHandler(item.product.id, 0.3, item.size)
                               }
-                            ></Input>
-                          </FormControl>
-                          <IconButton
-                            variant="outline"
-                            color="blue.900"
-                            _hover={{ color: "yellow.400" }}
-                            icon={<AddIcon />}
-                            size="xs"
-                            onClick={(e) =>
-                              qtyHandler(item.product.id, 0.5, item.size)
-                            }
-                            isDisabled={item.quantity >= item.product.variation}
-                          />
-                        </HStack>
-                      </Flex>
-                    </Box>
-                  </Stack>
-                </Box>
-              )}
-            </div>
-          ))}
+                              isDisabled={item.quantity <= 1}
+                            />
+                            <FormControl w="30px">
+                              <Input
+                                value={item.quantity}
+                                size="xs"
+                                onBlur={(e) =>
+                                  qtyHandler(
+                                    item.product.id,
+                                    e.target.value,
+                                    item.size
+                                  )
+                                }
+                              ></Input>
+                            </FormControl>
+                            <IconButton
+                              variant="outline"
+                              color="blue.900"
+                              _hover={{ color: "yellow.400" }}
+                              icon={<AddIcon />}
+                              size="xs"
+                              onClick={(e) =>
+                                qtyHandler(item.product.id, 0.5, item.size)
+                              }
+                              isDisabled={
+                                item.quantity >= item.product.variation
+                              }
+                            />
+                          </HStack>
+                        </Flex>
+                      </Box>
+                    </Stack>
+                  </Box>
+                )}
+              </div>
+            ))}
+            <Button
+              color="blue.900"
+              backgroundColor="transparent"
+              borderColor="yellow.400"
+              border="solid"
+              borderWidth="2px"
+              _hover={{
+                borderColor: "yellow.400",
+                backgroundColor: "blue.900",
+              }}
+              onClick={removeCart}
+              disabled={items.length === 0}
+            >
+              Remove all
+            </Button>
+          </Box>
           <Box>
             <Center>
               <Stack

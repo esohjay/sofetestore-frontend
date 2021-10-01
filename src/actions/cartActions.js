@@ -6,9 +6,6 @@ import {
   CART_UPDATE_REQUEST,
   CART_UPDATE_FAIL,
   CART_UPDATE_SUCCESS,
-  CART_REMOVE_REQUEST,
-  CART_REMOVE_FAIL,
-  CART_REMOVE_SUCCESS,
   CART_DETAILS_FAIL,
   CART_DETAILS_REQUEST,
   CART_DETAILS_SUCCESS,
@@ -47,8 +44,8 @@ export const createCart = (productId, info) => async (dispatch) => {
       `${process.env.REACT_APP_URL}/api/cart/${productId}`,
       info
     );
-    dispatch({ type: CART_CREATE_SUCCESS, payload: data });
     localStorage.setItem("cartId", JSON.stringify(data));
+    dispatch({ type: CART_CREATE_SUCCESS, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message
@@ -75,32 +72,13 @@ export const updateCart = (productId, info) => async (dispatch) => {
     dispatch({ type: CART_UPDATE_FAIL, payload: message });
   }
 };
-export const removeCartItem = (productId) => async (dispatch) => {
-  dispatch({ type: CART_REMOVE_REQUEST, payload: productId });
-
-  try {
-    const { data } = await Axios.put(
-      `${process.env.REACT_APP_URL}/api/cart/remove/${productId}`
-    );
-    dispatch({ type: CART_REMOVE_SUCCESS, payload: data.cart });
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message;
-    dispatch({ type: CART_REMOVE_FAIL, payload: message });
-  }
-};
 
 export const detailsCart = (id) => async (dispatch, getState) => {
-  const {
-    cart: { cartId },
-  } = getState();
-  dispatch({ type: CART_DETAILS_REQUEST, payload: cartId.idCart });
+  dispatch({ type: CART_DETAILS_REQUEST, payload: id });
 
   try {
     const { data } = await Axios.get(
-      `${process.env.REACT_APP_URL}/api/cart/cartitems/${cartId.idCart}`
+      `${process.env.REACT_APP_URL}/api/cart/cartitems/${id}`
     );
     dispatch({ type: CART_DETAILS_SUCCESS, payload: data });
     //localStorage.setItem("myCartDetails", JSON.stringify(data));

@@ -31,6 +31,7 @@ import {
   Square,
 } from "@chakra-ui/react";
 import { CART_CREATE_RESET } from "../constants/cartConstants";
+
 import { WISHLIST_CREATE_RESET } from "../constants/wishlistConstants";
 import { FaRegThumbsUp, FaRegCreditCard, FaTruck } from "react-icons/fa";
 import { SUBSCRIPTION_RESET } from "../constants/userConstants";
@@ -72,6 +73,7 @@ export default function HomeScreen() {
     //dispatch(detailsCart());
     //dispatch(detailsWishlist());
     dispatch({ type: SUBSCRIPTION_RESET });
+
     dispatch({ type: WISHLIST_CREATE_RESET });
     dispatch({ type: CART_CREATE_RESET });
   }, [dispatch, successWishlistCreate, successCartCreate]);
