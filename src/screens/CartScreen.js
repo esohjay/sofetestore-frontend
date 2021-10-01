@@ -128,7 +128,11 @@ export default function CartScreen(props) {
                     <Image
                       boxSize="full"
                       objectFit="cover"
-                      src={item.product.images[0].url}
+                      src={
+                        item.product.images.length > 0
+                          ? item.product.images[0].url
+                          : "/images/sofetelogo.jpg"
+                      }
                       alt={item.product.name}
                       objectPosition="center center"
                       cursor="pointer"
@@ -219,7 +223,11 @@ export default function CartScreen(props) {
                             <Image
                               boxSize="full"
                               objectFit="cover"
-                              src={item.product.images[0].url}
+                              src={
+                                item.product.images.length > 0
+                                  ? item.product.images[0].url
+                                  : "/images/sofetelogo.jpg"
+                              }
                               alt={item.product.name}
                               objectPosition="center center"
                               cursor="pointer"
