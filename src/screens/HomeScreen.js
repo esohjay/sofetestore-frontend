@@ -153,6 +153,7 @@ export default function HomeScreen() {
                           <Image
                             objectFit="cover"
                             objectPosition="center center"
+                            maxH="100%"
                             boxSize="full"
                             src={product.images.length && product.images[0].url}
                             alt={product.name}
